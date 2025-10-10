@@ -82,8 +82,6 @@ select * from semesters
 $stmt->execute();
 
 $semesters = $stmt->fetchAll();
-
-
 ?>
 
 <body x-data="search(true)" class="flex justify-content flex-col items-center">
@@ -215,6 +213,7 @@ $semesters = $stmt->fetchAll();
     <form method="POST" action="create.php" class="w-3/4 flex gap-x-2 mt-6 text-center">
         <h1 class="text-3xl font-bold mt-6">Subject:</h1>
         <input type="hidden" name="student_id" value="<?= $student['student_id'] ?>">
+        <input type="hidden" name="semester_code" value="<?= $_GET['semester'] ?>">
         <select name="subject" id="subject" name="subject" class="font-medium text-xl border border-black px-2">
             <?php foreach ($subjects as $subject): ?>
             <option value="<?= $subject['id'] ?>">

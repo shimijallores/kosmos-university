@@ -23,6 +23,7 @@
          <div class="px-4 py-8">
              <input type="hidden" name="student_id" value="<?= $student['student_id'] ?>">
              <input type="hidden" name="subject_id" :value="deleteId">
+             <input type="hidden" name="semester_code" value="<?= $_GET['semester'] ?>">
              <p>Are you sure you want to delete this subject? This action cannot be undone.</p>
          </div>
          <!-- Dialog Footer -->
