@@ -8,7 +8,6 @@ session_start();
 
 $student = $_SESSION['student'];
 
-
 if (empty($_SESSION['user'])) {
     header('location: /login.php');
     exit();
@@ -36,9 +35,10 @@ $pdf->Cell(200, 30, '', 0, 1, 'C');
 
 // Student Info
 $pdf->SetFont('Arial', '', 12);
-$pdf->Cell(75, 20, 'Student #: ' . $student['student_number'], 0, 0, 'L');
-$pdf->Cell(75, 20, 'Name: ' . $student['student_name'], 0, 0, 'L');
-$pdf->Cell(50, 20, 'Course: ' . $student['course_name'], 0, 1, 'L');
+$pdf->Cell(50, 20, 'Student #: ' . $student['student_number'], 0, 0, 'L');
+$pdf->Cell(50, 20, 'Name: ' . $student['student_name'], 0, 0, 'L');
+$pdf->Cell(50, 20, 'Course: ' . $student['course_name'], 0, 0, 'L');
+$pdf->Cell(50, 20, 'Semester: ' . $_GET['semester'], 0, 1, 'L');
 
 $pdf->SetFont('Arial', 'B', 12);
 $pdf->Cell(40, 10, 'Subject Code', 1, 0, 'C');

@@ -228,7 +228,7 @@ $semesters = $stmt->fetchAll();
 
     <div class="w-3/4 flex gap-x-2 items-center">
         <button type="submit" class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded"><a
-                target="_blank" href="print.php">Print</a></button>
+                target="_blank" href="print.php?semester=<?= $_GET['semester'] ?>">Print</a></button>
         <button type="submit" class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded"><a
                 href="/index.php">Close</a></button>
     </div>
