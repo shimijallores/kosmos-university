@@ -6,6 +6,10 @@ Table: student_subjects
 - field for midterms - decimal
 - final_course_grade or fcg - decimal
 
+Table: semesters
+- id tinyint unsigned
+- code varchar (10) [1st25-26]
+
 - Subject feature - [add subject per semester, display subject per semester, confirmation]
 - Grades feature - [module for grade input, filter by course by department,  print pdf, "pick students, pick sem, show subjects and input midterms and final course grade
 "]

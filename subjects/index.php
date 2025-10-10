@@ -2,18 +2,19 @@
 require('../functions.php');
 require('../partials/head.php');
 
-
-$student;
-
+# Auth Barrier
 if (empty($_SESSION['user'])) {
     header('location: /login.php');
     exit();
 }
 
+# Retain student info when page is reloaded
 if (!empty($_POST['student_number'])) {
     $_SESSION['student_number'] = $_POST['student_number'];
 }
 
+# Search Feature
+$student;
 if (isset($_SESSION['student_number'])) {
     $stmt = $connection->prepare("
     select s.student_id, s.student_number, s.name as student_name, c.code as course_name 
@@ -27,10 +28,11 @@ if (isset($_SESSION['student_number'])) {
     $student = $stmt->fetch();
 
     $stmt = $connection->prepare("
-    select sub.id, sub.code, sub.description, sub.days, sub.time, r.name as room_name, t.name as teacher_name, sub.price_unit, sub.units
+    select sub.id, sub.code, sub.description, sub.days, sem.code as semester_code, sub.time, r.name as room_name, t.name as teacher_name, sub.price_unit, sub.units
     from students s
     join student_subjects ss on ss.student_id = s.student_id 
     join subjects sub on ss.subject_id = sub.id
+    join semesters sem on ss.semester_id = sem.id
     join rooms r on r.id = sub.room_id
     join teachers t on t.id = sub.teacher_id
     where s.student_number = ?;
@@ -65,6 +67,17 @@ if (isset($_SESSION['student_number'])) {
         $_SESSION['student'] = $student;
     }
 }
+
+# Fetch semesters
+$stmt = $connection->prepare("
+select * from semesters
+");
+
+$stmt->execute();
+
+$semesters = $stmt->fetchAll();
+
+
 ?>
 
 <body x-data="search(true)" class="flex justify-content flex-col items-center">
@@ -104,13 +117,31 @@ if (isset($_SESSION['student_number'])) {
                 class="border font-medium border-black rounded-sm px-2" value="<?= $student['course_name'] ?? '' ?>"
                 readonly>
         </h1>
+        <h1 class="text-3xl font-bold mt-6">Semester: <input type="text"
+                class="border font-medium border-black rounded-sm px-2"
+                value="<?= $student_subjects[0]['semester_code'] ?>" readonly>
+        </h1>
+
+        <div class="flex items-center w-full justify-end gap-x-3">
+            <h1 class="text-xl">Semester</h1>
+            <select name="sort" id="sort" @change="window.location.href = `index.php?semester=${$event.target.value}`"
+                class="border border-black py-1 px-2">
+                <option value="">Default</option>
+                <?php foreach ($semesters as $semester) : ?>
+                <option value="<?= $semester['code'] ?>"
+                    <?= $semester['code'] === $_GET['semester'] ? 'selected' : '' ?>>
+                    <?= $semester['code'] ?>
+                </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
     </div>
     <?php endif; ?>
 
 
     <!-- Student Subject table -->
     <?php if (!empty($_SESSION['student_number']) && $student) : ?>
-    <br class="w-3/4 border border-black my-4">
+    <br class=" w-3/4 border border-black my-4">
     <table class="w-3/4 text-sm text-left rtl:text-right text-gray-500">
         <thead class="text-xs text-white uppercase bg-blue-500 ">
 
