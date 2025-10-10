@@ -71,6 +71,8 @@ if (isset($_SESSION['student_number'])) {
     <!-- Search Modal -->
     <?php require('search.php'); ?>
 
+    <!-- Delete Modal -->
+    <?php require('delete.php') ?>
 
     <button class="bg-blue-500 mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
         <a href="/index.php">Back to Menu</a>
@@ -137,6 +139,9 @@ if (isset($_SESSION['student_number'])) {
                 <th scope="col" class="px-6 py-3">
                     Units
                 </th>
+                <th scope="col" class="px-6 py-3">
+                    Actions
+                </th>
             </tr>
 
         </thead>
@@ -159,6 +164,12 @@ if (isset($_SESSION['student_number'])) {
                     <?= $subject['price_unit'] ?? '' ?></th>
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <?= $subject['units'] ?? '' ?></th>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <button @click='deleteModal = true; deleteId = <?= $subject["id"] ?>; console.log(deleteId)'
+                        class='bg-red-500 hover:bg-red-700 w-25 cursor-pointer text-white font-bold py-2 px-4 rounded'>
+                        Delete
+                    </button>
+                </th>
             </tr>
             <?php endforeach; ?>
         </tbody>
@@ -197,6 +208,8 @@ document.addEventListener('alpine:init', () => {
         open: false,
         message: [],
         studentNumber: null,
+        deleteModal: false,
+        deleteId: null,
 
         toggle() {
             this.open = !this.open
@@ -207,6 +220,7 @@ document.addEventListener('alpine:init', () => {
 
             this.message = await response.json();
         },
+
     }))
 })
 </script>
