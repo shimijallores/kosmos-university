@@ -61,11 +61,8 @@ $semesters = $stmt->fetchAll();
 ?>
 
 <body x-data="search(true)" class="flex justify-content flex-col items-center">
-    <!-- Search Modal -->
-    <?php require('search.php'); ?>
-
-    <!-- Delete Modal -->
-    <?php require('delete.php') ?>
+    <!-- Add Grade Modal -->
+    <?php require('create.php'); ?>
 
     <button class="bg-blue-500 mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
         <a href="/index.php">Back to Menu</a>
@@ -136,6 +133,9 @@ $semesters = $stmt->fetchAll();
                 <th scope="col" class="px-6 py-3">
                     Final Course Grade
                 </th>
+                <th scope="col" class="px-6 py-3">
+                    Actions
+                </th>
             </tr>
 
         </thead>
@@ -150,6 +150,12 @@ $semesters = $stmt->fetchAll();
                     <?= $subject['midterm_grade'] ?? '' ?></th>
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <?= $subject['final_course_grade'] ?? '' ?></th>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <button @click="open = true"
+                        class="bg-neutral-800 mr-2 hover:bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded">
+                        Input Grades
+                    </button>
+                </th>
             </tr>
             <?php endforeach; ?>
         </tbody>
@@ -161,7 +167,7 @@ $semesters = $stmt->fetchAll();
         <button type="submit" class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded"><a
                 target="_blank" href="print.php?semester=<?= $_GET['semester'] ?>">Print</a></button>
         <button type="submit" class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded"><a
-                href="/index.php">Close</a></button>
+                href="/index.php?semester<?= $_GET['semester'] ?>">Close</a></button>
     </div>
 
     <?php endif; ?>
@@ -173,19 +179,10 @@ document.addEventListener('alpine:init', () => {
         open: false,
         message: [],
         studentNumber: null,
-        deleteModal: false,
-        deleteId: null,
 
         toggle() {
             this.open = !this.open
         },
-
-        fetchStudent: async function(name) {
-            let response = await fetch(`api.php?name=${name}`);
-
-            this.message = await response.json();
-        },
-
     }))
 })
 </script>

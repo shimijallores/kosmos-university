@@ -1,5 +1,4 @@
 <?php
-
 require('../functions.php');
 require('../partials/database.php');
 
@@ -12,12 +11,12 @@ $stmt->execute([$_POST['semester_code']]);
 
 $semester = $stmt->fetch();
 
-// Delete from students table
+# Add subjects to a student
 $stmt = $connection->prepare("
-    delete from student_subjects where subject_id = ? and student_id = ? and semester_id = ?
-");
+    insert into student_subjects (student_id, subject_id, semester_id) values (?, ?, ?);
+    ");
 
-$stmt->execute([$_POST['subject_id'], $_POST['student_id'], $semester['id']]);
+$stmt->execute([$_POST['student_id'], $_POST['subject'], $semester['id']]);
 
-header("Location: index.php?semester={$_POST['semester_code']}");
-exit();
+header("location: index.php?semester={$_POST['semester_code']}");
+die();
