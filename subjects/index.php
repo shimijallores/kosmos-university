@@ -35,10 +35,10 @@ if (isset($_SESSION['student_number'])) {
     join semesters sem on ss.semester_id = sem.id
     join rooms r on r.id = sub.room_id
     join teachers t on t.id = sub.teacher_id
-    where s.student_number = ?;
+    where s.student_number = ? and sem.code = ?;
     ");
 
-    $stmt->execute([$_SESSION['student_number']]);
+    $stmt->execute([$_SESSION['student_number'], $_GET['semester']]);
 
     $student_subjects = $stmt->fetchAll();
 
@@ -118,8 +118,7 @@ $semesters = $stmt->fetchAll();
                 readonly>
         </h1>
         <h1 class="text-3xl font-bold mt-6">Semester: <input type="text"
-                class="border font-medium border-black rounded-sm px-2"
-                value="<?= $student_subjects[0]['semester_code'] ?>" readonly>
+                class="border font-medium border-black rounded-sm px-2" value="<?= $_GET['semester'] ?>" readonly>
         </h1>
 
         <div class="flex items-center w-full justify-end gap-x-3">
