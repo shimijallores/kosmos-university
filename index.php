@@ -17,7 +17,7 @@ if (empty($_SESSION['user'])) {
         <a href="courses/index.php">Courses</a>
     </button>
     <button class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
-        <a href="subjects/index.php">Subject</a>
+        <a href="subjects/index.php?semester=1st25-26">Subject</a>
     </button>
     <button class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
         <a href="list.php">List</a>

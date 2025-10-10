@@ -27,6 +27,7 @@ if (isset($_SESSION['student_number'])) {
 
     $student = $stmt->fetch();
 
+    # Get student per sem
     $stmt = $connection->prepare("
     select sub.id, sub.code, sub.description, sub.days, sem.code as semester_code, sub.time, r.name as room_name, t.name as teacher_name, sub.price_unit, sub.units
     from students s
@@ -46,6 +47,7 @@ if (isset($_SESSION['student_number'])) {
     if ($student) {
         $student['subjects'] = $student_subjects;
 
+        # Get all subjects
         $stmt = $connection->prepare("
             select sub.id, sub.code, sub.description, sub.days, sub.time, r.name as room_name, t.name as teacher_name, sub.price_unit, sub.units
             from subjects sub
@@ -56,6 +58,10 @@ if (isset($_SESSION['student_number'])) {
         $stmt->execute();
 
         $subjects = $stmt->fetchAll();
+
+        foreach ($student['subjects'] as $key => $subject) {
+            unset($student['subjects'][$key]['semester_code']);;
+        }
 
         $string_subjects = array_map('serialize', $subjects);
         $string_student_subjects = array_map('serialize', $student['subjects']);
@@ -125,7 +131,6 @@ $semesters = $stmt->fetchAll();
             <h1 class="text-xl">Semester</h1>
             <select name="sort" id="sort" @change="window.location.href = `index.php?semester=${$event.target.value}`"
                 class="border border-black py-1 px-2">
-                <option value="">Default</option>
                 <?php foreach ($semesters as $semester) : ?>
                 <option value="<?= $semester['code'] ?>"
                     <?= $semester['code'] === $_GET['semester'] ? 'selected' : '' ?>>
