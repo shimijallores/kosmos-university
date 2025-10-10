@@ -1,20 +1,20 @@
 TODO (University Enrollment System): 
 
 Admin Portal Program
-Table: student_subjects
+✅Table: student_subjects
 - semester id
 - field for midterms - decimal
 - final_course_grade or fcg - decimal
 
-Table: semesters
+✅Table: semesters
 - id tinyint unsigned
 - code varchar (10) [1st25-26]
 
-- Subject feature - [add subject per semester, display subject per semester, confirmation]
-- Grades feature - [module for grade input (combobox), filter by course by department,  print pdf, "pick students, pick sem, show subjects and input midterms and final course grade
+✅ Subject feature - [add subject per semester, display subject per semester, confirmation, print by semester] 
+❌Grades feature - [module for grade input (combobox), filter by course by department,  print pdf, "pick students, pick sem, show subjects and input midterms and final course grade
 "]
-- Enrollment feature - [enlistment form per semester, before enroll, pick semester to enroll] 
+❌Enrollment feature - [enlistment form per semester, before enroll, pick semester to enroll] 
 
 Student Portal Program
-- Authentication
-- Grades display
+❌ Authentication
+❌ Grades display
