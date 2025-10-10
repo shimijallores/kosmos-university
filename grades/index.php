@@ -29,7 +29,7 @@ if (isset($_SESSION['student_number'])) {
 
     # Get student per sem
     $stmt = $connection->prepare("
-    select sub.id, sub.code, sub.description, sub.days, sem.code as semester_code, sub.time, r.name as room_name, t.name as teacher_name, sub.price_unit, sub.units
+    select sub.id, sub.code, sub.description, sub.days, sem.code as semester_code, sub.time, r.name as room_name, t.name as teacher_name, sub.price_unit, sub.units, ss.midterm_grade, ss.final_course_grade
     from students s
     join student_subjects ss on ss.student_id = s.student_id 
     join subjects sub on ss.subject_id = sub.id
@@ -45,31 +45,6 @@ if (isset($_SESSION['student_number'])) {
 
     $subjects;
     if ($student) {
-        $student['subjects'] = $student_subjects;
-
-        # Get all subjects
-        $stmt = $connection->prepare("
-            select sub.id, sub.code, sub.description, sub.days, sub.time, r.name as room_name, t.name as teacher_name, sub.price_unit, sub.units
-            from subjects sub
-            join rooms r on r.id = sub.room_id
-            join teachers t on t.id = sub.teacher_id
-        ");
-
-        $stmt->execute();
-
-        $subjects = $stmt->fetchAll();
-
-        foreach ($student['subjects'] as $key => $subject) {
-            unset($student['subjects'][$key]['semester_code']);;
-        }
-
-        $string_subjects = array_map('serialize', $subjects);
-        $string_student_subjects = array_map('serialize', $student['subjects']);
-
-        $subjects_diff = array_diff($string_subjects, $string_student_subjects);
-
-        $subjects = array_map('unserialize', $subjects_diff);
-
         $_SESSION['student'] = $student;
     }
 }
@@ -82,6 +57,7 @@ select * from semesters
 $stmt->execute();
 
 $semesters = $stmt->fetchAll();
+
 ?>
 
 <body x-data="search(true)" class="flex justify-content flex-col items-center">
@@ -155,76 +131,31 @@ $semesters = $stmt->fetchAll();
                     Description
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Days
+                    Midterm Grades
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Time
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Room
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Teacher
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Price Per Unit
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Units
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Actions
+                    Final Course Grade
                 </th>
             </tr>
 
         </thead>
         <tbody>
-            <?php foreach ($student['subjects'] as $key => $subject) : ?>
+            <?php foreach ($student_subjects as $key => $subject) : ?>
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <?= ($key + 1) . ". " . $subject['code'] ?? '' ?></th>
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <?= substr($subject['description'] ?? '', 0, 100) . '...'  ?></th>
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <?= $subject['days'] ?? '' ?></th>
+                    <?= $subject['midterm_grade'] ?? '' ?></th>
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <?= $subject['time'] ?? '' ?></th>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <?= $subject['room_name'] ?? '' ?></th>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <?= $subject['teacher_name'] ?? '' ?></th>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <?= $subject['price_unit'] ?? '' ?></th>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <?= $subject['units'] ?? '' ?></th>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <button @click='deleteModal = true; deleteId = <?= $subject["id"] ?>; console.log(deleteId)'
-                        class='bg-red-500 hover:bg-red-700 w-25 cursor-pointer text-white font-bold py-2 px-4 rounded'>
-                        Delete
-                    </button>
-                </th>
+                    <?= $subject['final_course_grade'] ?? '' ?></th>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 
     <br class="w-3/4 border border-black my-4">
-
-    <form method="POST" action="create.php" class="w-3/4 flex gap-x-2 mt-6 text-center">
-        <h1 class="text-3xl font-bold mt-6">Subject:</h1>
-        <input type="hidden" name="student_id" value="<?= $student['student_id'] ?>">
-        <input type="hidden" name="semester_code" value="<?= $_GET['semester'] ?>">
-        <select name="subject" id="subject" name="subject" class="font-medium text-xl border border-black px-2">
-            <?php foreach ($subjects as $subject): ?>
-            <option value="<?= $subject['id'] ?>">
-                <?= "{$subject['code']} - {$subject['days']} - {$subject['time']} - {$subject['room_name']} - {$subject['teacher_name']} - {$subject['price_unit']} - {$subject['units']}" ?>
-            </option>
-            <?php endforeach; ?>
-        </select>
-
-        <button type="submit"
-            class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded">Add</button>
-    </form>
 
     <div class="w-3/4 flex gap-x-2 items-center">
         <button type="submit" class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded"><a
