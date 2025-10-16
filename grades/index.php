@@ -64,6 +64,9 @@ $semesters = $stmt->fetchAll();
     <!-- Add Grade Modal -->
     <?php require('create.php'); ?>
 
+    <!-- Search Modal -->
+    <?php require('search.php'); ?>
+
     <button class="bg-blue-500 mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
         <a href="/index.php">Back to Menu</a>
     </button>
@@ -80,111 +83,118 @@ $semesters = $stmt->fetchAll();
 
         <button type="submit"
             class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded">Search</button>
-        <button type="button" @click="open = true"
+        <button type="button" @click="searchOpen = true"
             class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded">🔍</button>
     </form>
 
     <?php if (!empty($_SESSION['student_number']) && $student) : ?>
-    <div class="w-3/4 flex gap-x-2 flex-col mb-6">
-        <h1 class="text-3xl font-bold mt-6">Name: <input type="text"
-                class="border font-medium border-black rounded-sm px-2" value="<?= $student['student_name'] ?? '' ?>"
-                readonly>
-        </h1>
-        <h1 class="text-3xl font-bold mt-6">Course: <input type="text"
-                class="border font-medium border-black rounded-sm px-2" value="<?= $student['course_name'] ?? '' ?>"
-                readonly>
-        </h1>
-        <h1 class="text-3xl font-bold mt-6">Semester: <input type="text"
-                class="border font-medium border-black rounded-sm px-2" value="<?= $_GET['semester'] ?>" readonly>
-        </h1>
+        <div class="w-3/4 flex gap-x-2 flex-col mb-6">
+            <h1 class="text-3xl font-bold mt-6">Name: <input type="text"
+                    class="border font-medium border-black rounded-sm px-2" value="<?= $student['student_name'] ?? '' ?>"
+                    readonly>
+            </h1>
+            <h1 class="text-3xl font-bold mt-6">Course: <input type="text"
+                    class="border font-medium border-black rounded-sm px-2" value="<?= $student['course_name'] ?? '' ?>"
+                    readonly>
+            </h1>
+            <h1 class="text-3xl font-bold mt-6">Semester: <input type="text"
+                    class="border font-medium border-black rounded-sm px-2" value="<?= $_GET['semester'] ?>" readonly>
+            </h1>
 
-        <div class="flex items-center w-full justify-end gap-x-3">
-            <h1 class="text-xl">Semester</h1>
-            <select name="sort" id="sort" @change="window.location.href = `index.php?semester=${$event.target.value}`"
-                class="border border-black py-1 px-2">
-                <?php foreach ($semesters as $semester) : ?>
-                <option value="<?= $semester['code'] ?>"
-                    <?= $semester['code'] === $_GET['semester'] ? 'selected' : '' ?>>
-                    <?= $semester['code'] ?>
-                </option>
-                <?php endforeach; ?>
-            </select>
+            <div class="flex items-center w-full justify-end gap-x-3">
+                <h1 class="text-xl">Semester</h1>
+                <select name="sort" id="sort" @change="window.location.href = `index.php?semester=${$event.target.value}`"
+                    class="border border-black py-1 px-2">
+                    <?php foreach ($semesters as $semester) : ?>
+                        <option value="<?= $semester['code'] ?>"
+                            <?= $semester['code'] === $_GET['semester'] ? 'selected' : '' ?>>
+                            <?= $semester['code'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
         </div>
-    </div>
     <?php endif; ?>
 
 
     <!-- Student Subject table -->
     <?php if (!empty($_SESSION['student_number']) && $student) : ?>
-    <br class=" w-3/4 border border-black my-4">
-    <table class="w-3/4 text-sm text-left rtl:text-right text-gray-500">
-        <thead class="text-xs text-white uppercase bg-blue-500 ">
+        <br class=" w-3/4 border border-black my-4">
+        <table class="w-3/4 text-sm text-left rtl:text-right text-gray-500">
+            <thead class="text-xs text-white uppercase bg-blue-500 ">
 
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Subject Code
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Description
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Midterm Grades
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Final Course Grade
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Actions
-                </th>
-            </tr>
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Subject Code
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Description
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Midterm Grades
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Final Course Grade
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Actions
+                    </th>
+                </tr>
 
-        </thead>
-        <tbody>
-            <?php foreach ($student_subjects as $key => $subject) : ?>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <?= ($key + 1) . ". " . $subject['code'] ?? '' ?></th>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <?= substr($subject['description'] ?? '', 0, 100) . '...'  ?></th>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <?= $subject['midterm_grade'] ?? '' ?></th>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <?= $subject['final_course_grade'] ?? '' ?></th>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <button @click="open = true"
-                        class="bg-neutral-800 mr-2 hover:bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded">
-                        Input Grades
-                    </button>
-                </th>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($student_subjects as $key => $subject) : ?>
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <?= ($key + 1) . ". " . $subject['code'] ?? '' ?></th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <?= substr($subject['description'] ?? '', 0, 100) . '...'  ?></th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <?= $subject['midterm_grade'] ?? '' ?></th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <?= $subject['final_course_grade'] ?? '' ?></th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <button @click="open = true"
+                                class="bg-neutral-800 mr-2 hover:bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded">
+                                Input Grades
+                            </button>
+                        </th>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 
-    <br class="w-3/4 border border-black my-4">
+        <br class="w-3/4 border border-black my-4">
 
-    <div class="w-3/4 flex gap-x-2 items-center">
-        <button type="submit" class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded"><a
-                target="_blank" href="print.php?semester=<?= $_GET['semester'] ?>">Print</a></button>
-        <button type="submit" class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded"><a
-                href="/index.php?semester<?= $_GET['semester'] ?>">Close</a></button>
-    </div>
+        <div class="w-3/4 flex gap-x-2 items-center">
+            <button type="submit" class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded"><a
+                    target="_blank" href="print.php?semester=<?= $_GET['semester'] ?>">Print</a></button>
+            <button type="submit" class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded"><a
+                    href="/index.php?semester<?= $_GET['semester'] ?>">Close</a></button>
+        </div>
 
     <?php endif; ?>
 </body>
 
 <script>
-document.addEventListener('alpine:init', () => {
-    Alpine.data('search', () => ({
-        open: false,
-        message: [],
-        studentNumber: null,
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('search', () => ({
+            open: false,
+            searchOpen: false,
+            message: [],
+            studentNumber: null,
 
-        toggle() {
-            this.open = !this.open
-        },
-    }))
-})
+            toggle() {
+                this.open = !this.open
+            },
+
+            fetchStudent: async function(name) {
+                let response = await fetch(`api.php?name=${name}`);
+
+                this.message = await response.json();
+            },
+        }))
+    })
 </script>
 
 <?php
