@@ -75,9 +75,9 @@ if (!$success && !$error) {
       <!-- Actions -->
       <div class="mt-8 space-y-3">
         <?php if ($success): ?>
-          <a href="../login.php"
+          <a href="../menu.php"
             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md transition duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 inline-block text-center">
-            Proceed to Login
+            Back to Main Menu
           </a>
         <?php endif; ?>
 

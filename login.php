@@ -74,11 +74,16 @@ $_SESSION['message'] = 'Invalid credentials';
       <button type="submit"
         class="bg bg-blue-600 px-2 py-1 text-white w-full text-center rounded-md hover:opacity-80 cursor-pointer transition duration-200">Login</button>
 
-      <div class="mt-4 text-center">
+      <div class="mt-4 text-center space-y-2">
         <p class="text-sm text-gray-600">
           New student?
           <a href="enrollment/index.php" class="text-blue-600 hover:text-blue-800 font-medium">
             Enroll here
+          </a>
+        </p>
+        <p class="text-sm text-gray-600">
+          <a href="menu.php" class="text-gray-600 hover:text-gray-800 font-medium">
+            ← Back to Main Menu
           </a>
         </p>
       </div>

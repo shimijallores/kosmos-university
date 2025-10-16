@@ -27,8 +27,13 @@ if (!$student) {
   exit();
 }
 
-# Get current semester or default to first one
-$current_semester = $_GET['semester'] ?? '1st25-26';
+# Fetch semesters
+$stmt = $connection->prepare("select * from semesters order by id");
+$stmt->execute();
+$semesters = $stmt->fetchAll();
+
+# Get current semester or default to first available semester
+$current_semester = $_GET['semester'] ?? ($semesters[0]['code'] ?? '1st25-26');
 
 # Get student subjects for current semester
 $stmt = $connection->prepare("
@@ -44,11 +49,6 @@ where s.student_number = ? and sem.code = ?;
 
 $stmt->execute([$user['name'], $current_semester]);
 $student_subjects = $stmt->fetchAll();
-
-# Fetch semesters
-$stmt = $connection->prepare("select * from semesters");
-$stmt->execute();
-$semesters = $stmt->fetchAll();
 
 # Calculate GPA
 $total_points = 0;
@@ -80,7 +80,7 @@ $gpa = $total_units > 0 ? number_format($total_points / $total_units, 2) : '0.00
 
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:justify-end w-full">
         <h1 class="text-lg sm:text-xl">Semester</h1>
-        <select name="sort" id="sort" @change="window.location.href = `grades.php?semester=${$event.target.value}`"
+        <select name="semester" id="semester_select" onchange="changeSemester(this.value)"
           class="py-1 px-2 border border-black w-full sm:w-auto">
           <?php foreach ($semesters as $semester) : ?>
             <option value="<?= $semester['code'] ?>"
@@ -106,31 +106,39 @@ $gpa = $total_units > 0 ? number_format($total_points / $total_units, 2) : '0.00
           </tr>
         </thead>
         <tbody>
-          <?php foreach ($student_subjects as $key => $subject) : ?>
-            <tr class="hover:bg-gray-100">
-              <td class="px-2 py-2"><?= ($key + 1) . ". " . $subject['code'] ?? '' ?></td>
-              <td class="px-2 py-2"><?= substr($subject['description'] ?? '', 0, 100) . '...' ?></td>
-              <td class="px-2 py-2 text-center"><?= $subject['units'] ?? '' ?></td>
-              <td class="px-2 py-2 text-center">
-                <?= $subject['midterm_grade'] != '0.00' ? number_format((float)$subject['midterm_grade'], 2) : '-' ?>
-              </td>
-              <td class="px-2 py-2 text-center">
-                <?= $subject['final_course_grade'] != '0.00' ? number_format((float)$subject['final_course_grade'], 2) : '-' ?>
-              </td>
-              <td class="px-2 py-2 text-center">
-                <?php
-                $final_grade = (float)$subject['final_course_grade'];
-                if ($final_grade >= 1.0 && $final_grade <= 3.0) {
-                  echo '<span class="text-green-600 font-bold">Passed</span>';
-                } elseif ($final_grade > 3.0) {
-                  echo '<span class="text-red-600 font-bold">Failed</span>';
-                } else {
-                  echo '<span class="text-gray-500">Pending</span>';
-                }
-                ?>
+          <?php if (empty($student_subjects)) : ?>
+            <tr>
+              <td colspan="6" class="px-2 py-8 text-center text-gray-500">
+                No subjects enrolled for this semester.
               </td>
             </tr>
-          <?php endforeach; ?>
+          <?php else : ?>
+            <?php foreach ($student_subjects as $key => $subject) : ?>
+              <tr class="hover:bg-gray-100">
+                <td class="px-2 py-2"><?= ($key + 1) . ". " . $subject['code'] ?? '' ?></td>
+                <td class="px-2 py-2"><?= substr($subject['description'] ?? '', 0, 100) . '...' ?></td>
+                <td class="px-2 py-2 text-center"><?= $subject['units'] ?? '' ?></td>
+                <td class="px-2 py-2 text-center">
+                  <?= $subject['midterm_grade'] != '0.00' ? number_format((float)$subject['midterm_grade'], 2) : '-' ?>
+                </td>
+                <td class="px-2 py-2 text-center">
+                  <?= $subject['final_course_grade'] != '0.00' ? number_format((float)$subject['final_course_grade'], 2) : '-' ?>
+                </td>
+                <td class="px-2 py-2 text-center">
+                  <?php
+                  $final_grade = (float)$subject['final_course_grade'];
+                  if ($final_grade >= 1.0 && $final_grade <= 3.0) {
+                    echo '<span class="text-green-600 font-bold">Passed</span>';
+                  } elseif ($final_grade > 3.0) {
+                    echo '<span class="text-red-600 font-bold">Failed</span>';
+                  } else {
+                    echo '<span class="text-gray-500">Pending</span>';
+                  }
+                  ?>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          <?php endif; ?>
         </tbody>
       </table>
     </div>
@@ -142,6 +150,12 @@ $gpa = $total_units > 0 ? number_format($total_points / $total_units, 2) : '0.00
     </div>
   </div>
 </body>
+
+<script>
+  function changeSemester(semester) {
+    window.location.href = `grades.php?semester=${semester}`;
+  }
+</script>
 
 <?php
 require('../partials/footer.php')

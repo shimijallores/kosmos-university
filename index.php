@@ -3,7 +3,7 @@ require('functions.php');
 require('partials/head.php');
 
 if (empty($_SESSION['user'])) {
-    header('location: login.php');
+    header('location: menu.php');
     exit();
 }
 ?>

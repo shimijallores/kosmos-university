@@ -18,5 +18,5 @@ Admin Portal Program
 Student Portal Program
 ✅ Enrollment feature - [ form asks for name, gender, course, semester] 
 ✅ Authentication
-❌ Grades display
+✅ Grades display
 
