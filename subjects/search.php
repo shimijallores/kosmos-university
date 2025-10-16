@@ -1,12 +1,12 @@
  <div x-cloak x-show="open" x-transition.opacity.duration.200ms x-on:keydown.esc.window="open = false"
      x-on:click.self="open = false"
-     class="fixed inset-0 z-30 flex items-end justify-center bg-black/20 p-4 pb-8 backdrop-blur-md sm:items-center lg:p-8"
+     class="fixed inset-0 z-30 flex items-center justify-center bg-black/20 p-4 backdrop-blur-md sm:p-8"
      role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
      <!-- Modal Dialog -->
      <form action="index.php?semester=<?= $_GET['semester'] ?>" method="GET" x-show="open"
          x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
          x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100"
-         class="flex max-w-lg min-w-1/4 flex-col gap-4 overflow-hidden rounded-sm border border-neutral-300 bg-white text-neutral-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
+         class="w-full max-w-sm mx-4 sm:max-w-lg flex flex-col gap-4 overflow-hidden rounded-sm border border-neutral-300 bg-white text-neutral-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
          <!-- Dialog Header -->
          <div
              class="flex items-center justify-between border-b border-neutral-300 bg-neutral-50/60 p-4 dark:border-neutral-700 dark:bg-neutral-950/20">
