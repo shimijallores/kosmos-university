@@ -58,6 +58,7 @@ $stmt->execute();
 
 $semesters = $stmt->fetchAll();
 
+
 ?>
 
 <body x-data="search(true)" class="flex justify-content flex-col items-center">
@@ -133,20 +134,14 @@ $semesters = $stmt->fetchAll();
                         <tr class="hover:bg-gray-100">
                             <td class="px-2 py-2"><?= ($key + 1) . ". " . $subject['code'] ?? '' ?></td>
                             <td class="px-2 py-2"><?= substr($subject['description'] ?? '', 0, 100) . '...' ?></td>
-                            <td class="px-2 py-2">
-                                <input type="number" step="0.01" min="0" max="100"
-                                    class="w-full border border-gray-300 rounded px-2 py-1"
-                                    value="<?= $subject['midterm_grade'] ?? '' ?>"
-                                    readonly>
+                            <td class="border border-black px-2 py-2 text-center">
+                                <?= $subject['midterm_grade'] ? number_format((float)$subject['midterm_grade'], 2) : '-' ?>
                             </td>
-                            <td class="px-2 py-2">
-                                <input type="number" step="0.01" min="0" max="100"
-                                    class="w-full border border-gray-300 rounded px-2 py-1"
-                                    value="<?= $subject['final_course_grade'] ?? '' ?>"
-                                    readonly>
+                            <td class="border border-black px-2 py-2 text-center">
+                                <?= $subject['final_course_grade'] ? number_format((float)$subject['final_course_grade'], 2) : '-' ?>
                             </td>
-                            <td class="px-2 py-2">
-                                <button @click="open = true"
+                            <td class="border border-black px-2 py-2">
+                                <button @click="openGradeModal(<?= $subject['id'] ?>, '<?= $subject['midterm_grade'] ? number_format((float)$subject['midterm_grade'], 2) : '' ?>', '<?= $subject['final_course_grade'] ? number_format((float)$subject['final_course_grade'], 2) : '' ?>')"
                                     class="bg-neutral-800 hover:bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded w-full sm:w-auto">
                                     Input Grades
                                 </button>
@@ -173,16 +168,26 @@ $semesters = $stmt->fetchAll();
             searchOpen: false,
             message: [],
             studentNumber: null,
+            selectedSubjectId: null,
+            selectedMidtermGrade: '',
+            selectedFinalGrade: '',
 
             toggle() {
                 this.open = !this.open
+            },
+
+            openGradeModal(subjectId, midtermGrade, finalGrade) {
+                this.selectedSubjectId = subjectId;
+                this.selectedMidtermGrade = midtermGrade;
+                this.selectedFinalGrade = finalGrade;
+                this.open = true;
             },
 
             fetchStudent: async function(name) {
                 let response = await fetch(`api.php?name=${name}`);
 
                 this.message = await response.json();
-            },
+            }
         }))
     })
 </script>

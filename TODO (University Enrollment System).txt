@@ -13,7 +13,7 @@ Admin Portal Program
 - code varchar (10) [1st25-26]
 
 ✅ Subject feature - [add subject per semester, display subject per semester, confirmation, print by semester] 
-❌Grades feature - [module for grade input (combobox), filter by course by department, print grades, "pick students, pick sem, show subjects and input midterms and final course grade"]
+❌Grades feature - [module for grade input (combobox), print grades, "pick students, pick sem, show subjects and input midterms and final course grade"]
 ❌Enrollment feature - [enlistment form per semester (name, gender, course, semester)] 
 
 Student Portal Program

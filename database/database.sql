@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `courses` (
   PRIMARY KEY (`course_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.courses: ~3 rows (approximately)
+-- Dumping data for table unicore.courses: ~0 rows (approximately)
 INSERT INTO `courses` (`course_id`, `code`, `name`) VALUES
 	(1, 'CS101', 'Computer Science'),
 	(2, 'IT201', 'Information Technology'),
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.rooms: ~3 rows (approximately)
+-- Dumping data for table unicore.rooms: ~0 rows (approximately)
 INSERT INTO `rooms` (`id`, `name`) VALUES
 	(1, 'Room A'),
 	(2, 'Room B'),
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `semesters` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.semesters: ~2 rows (approximately)
+-- Dumping data for table unicore.semesters: ~0 rows (approximately)
 INSERT INTO `semesters` (`id`, `code`) VALUES
 	(1, '1st25-26'),
 	(2, '2nd25-26');
@@ -62,15 +62,13 @@ CREATE TABLE IF NOT EXISTS `students` (
   `course_id` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`student_id`),
   KEY `FK_students_courses` (`course_id`),
-  CONSTRAINT `FK_students_courses` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FK_students_courses` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.students: ~4 rows (approximately)
+-- Dumping data for table unicore.students: ~0 rows (approximately)
 INSERT INTO `students` (`student_id`, `student_number`, `name`, `gender`, `course_id`) VALUES
 	(1, 'S2023001', 'Michael Brown', 'Male', 1),
-	(2, 'S2023002', 'Sophia Taylor', 'Female', 2),
-	(3, 'S2023003', 'Daniel Wilson', 'Male', 1),
-	(4, 'S2023004', 'Emma Davis', 'M', 3);
+	(3, 'S2023003', 'Daniel Wilson', 'Male', 1);
 
 -- Dumping structure for table unicore.student_subjects
 CREATE TABLE IF NOT EXISTS `student_subjects` (
@@ -78,23 +76,22 @@ CREATE TABLE IF NOT EXISTS `student_subjects` (
   `subject_id` int DEFAULT NULL,
   `student_id` int DEFAULT NULL,
   `semester_id` int DEFAULT NULL,
-  `midterm_grade` int DEFAULT NULL,
-  `final_course_grade` int DEFAULT NULL,
+  `midterm_grade` decimal(20,6) NOT NULL DEFAULT '0.000000',
+  `final_course_grade` decimal(20,6) NOT NULL DEFAULT '0.000000',
   PRIMARY KEY (`id`),
-  KEY `FK_student_subjects_subjects` (`subject_id`),
-  KEY `FK_student_subjects_students` (`student_id`),
   KEY `FK_student_subjects_semesters` (`semester_id`),
-  CONSTRAINT `FK_student_subjects_semesters` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`),
-  CONSTRAINT `FK_student_subjects_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`),
-  CONSTRAINT `FK_student_subjects_subjects` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `FK_student_subjects_students` (`student_id`),
+  KEY `FK_student_subjects_subjects` (`subject_id`),
+  CONSTRAINT `FK_student_subjects_semesters` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_student_subjects_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_student_subjects_subjects` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.student_subjects: ~0 rows (approximately)
+-- Dumping data for table unicore.student_subjects: ~3 rows (approximately)
 INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`, `midterm_grade`, `final_course_grade`) VALUES
-	(2, 2, 1, 1, NULL, NULL),
-	(3, 2, 2, 1, NULL, NULL),
-	(4, 3, 3, 1, NULL, NULL),
-	(6, 2, 4, 1, NULL, NULL);
+	(2, 2, 1, 1, 0.000000, 0.000000),
+	(4, 3, 3, 1, 0.000000, 0.000000),
+	(7, 1, 3, 1, 0.000000, 0.000000);
 
 -- Dumping structure for table unicore.subjects
 CREATE TABLE IF NOT EXISTS `subjects` (
@@ -110,11 +107,11 @@ CREATE TABLE IF NOT EXISTS `subjects` (
   PRIMARY KEY (`id`),
   KEY `FK_subjects_rooms` (`room_id`),
   KEY `FK_subjects_teachers` (`teacher_id`),
-  CONSTRAINT `FK_subjects_rooms` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`),
-  CONSTRAINT `FK_subjects_teachers` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`)
+  CONSTRAINT `FK_subjects_rooms` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_subjects_teachers` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.subjects: ~3 rows (approximately)
+-- Dumping data for table unicore.subjects: ~0 rows (approximately)
 INSERT INTO `subjects` (`id`, `code`, `description`, `days`, `time`, `room_id`, `teacher_id`, `price_unit`, `units`) VALUES
 	(1, 'MATH101', 'Calculus 1', 'Mon/Wed/Fri', '09:00-10:30', 1, 1, 500, 3),
 	(2, 'CS201', 'Data Structures', 'Tue/Thu', '11:00-12:30', 3, 2, 700, 4),
@@ -127,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `teachers` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.teachers: ~3 rows (approximately)
+-- Dumping data for table unicore.teachers: ~0 rows (approximately)
 INSERT INTO `teachers` (`id`, `name`) VALUES
 	(1, 'Dr. Alice Smith'),
 	(2, 'Prof. John Doe'),
@@ -141,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.users: ~1 rows (approximately)
+-- Dumping data for table unicore.users: ~0 rows (approximately)
 INSERT INTO `users` (`id`, `name`, `password`) VALUES
 	(1, 'shimi', 'shimi');
 
