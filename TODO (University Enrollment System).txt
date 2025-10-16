@@ -1,5 +1,7 @@
 TODO (University Enrollment System): 
 
+✅Design Overhaul for Mobile Responsiveness 
+
 Admin Portal Program
 ✅Table: student_subjects
 - semester id
@@ -18,4 +20,3 @@ Student Portal Program
 ❌ Authentication
 ❌ Grades display
 
-❌Design Overhaul for Mobile Responsiveness 
