@@ -23,67 +23,66 @@ $courses = $stmt->fetchAll();
     <button class="bg-blue-500 mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
         <a href="/index.php">Back to Menu</a>
     </button>
-    <div class="w-3/4 flex justify-between items-center">
-        <h1 class="text-3xl font-bold mt-6">COURSES</h1>
-        <button class="bg-neutral-900 mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
+    <div class="w-full md:max-w-3/4 mx-auto px-4 md:px-0 gap-x-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold mt-6">COURSES</h1>
+        <button class="bg-neutral-900 text-xs sm:text-lg mt-6 w-32 sm:w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
             <a href="create.php">Add a course</a>
         </button>
     </div>
 
     <!-- courses table -->
-    <table class="w-3/4 text-sm text-left rtl:text-right text-gray-500">
-        <thead class="text-xs text-white uppercase bg-blue-500 ">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Course Id
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Code
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Name
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Actions
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+    <div class="w-full flex md:justify-center overflow-x-auto">
+        <table class="w-full min-w-[500px] max-w-3/4 text-xs sm:text-sm border border-blue-500 text-left rtl:text-right text-gray-500">
+            <thead class="text-xs text-white uppercase bg-blue-500">
+                <tr>
+                    <th scope="col" class="px-2 sm:px-6 py-3">
+                        Course Id
+                    </th>
+                    <th scope="col" class="px-2 sm:px-6 py-3">
+                        Code
+                    </th>
+                    <th scope="col" class="px-2 sm:px-6 py-3">
+                        Name
+                    </th>
+                    <th scope="col" class="px-2 sm:px-6 py-3">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
                 <?php
                 foreach ($courses as $course) {
-                    echo '<tr>';
-                    echo '<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">';
+                    echo '<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">';
+                    echo '<th scope="row" class="px-2 sm:px-6 py-4 font-medium text-gray-900 dark:text-white break-words">';
                     echo $course['course_id'];
                     echo '</th>';
 
-                    echo '<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">';
+                    echo '<th scope="row" class="px-2 sm:px-6 py-4 font-medium text-gray-900 dark:text-white break-words">';
                     echo $course['code'];
                     echo '</th>';
 
-                    echo '<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">';
+                    echo '<th scope="row" class="px-2 sm:px-6 py-4 font-medium text-gray-900 dark:text-white break-words">';
                     echo $course['name'];
                     echo '</th>';
 
-                    echo '<td>';
-                    echo '<button class="bg-blue-500 mr-2 hover:bg-blue-700 w-25 cursor-pointer text-white font-bold py-2 px-4 rounded">';
+                    echo '<td class="px-2 sm:px-6 py-4">';
+                    echo '<div class="flex flex-col sm:flex-row gap-1">';
+                    echo '<button class="bg-blue-500 text-xs hover:bg-blue-700 cursor-pointer text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded">';
                     echo "<a href='edit.php?id={$course["course_id"]}'>Edit</a>";
                     echo '</button>';
 
-                    echo "
-                    <button @click='deleteModal = true; deleteId = {$course["course_id"]}; console.log(deleteId)'
-                        class='bg-red-500 hover:bg-red-700 w-25 cursor-pointer text-white font-bold py-2 px-4 rounded'>
-                        Delete
-                    </button>
-                    ";
-
+                    echo '<button @click="deleteModal = true; deleteId = ' . $course["course_id"] . '; console.log(deleteId)"';
+                    echo ' class="bg-red-500 text-xs hover:bg-red-700 cursor-pointer text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded">';
+                    echo 'Delete';
+                    echo '</button>';
+                    echo '</div>';
                     echo '</td>';
                     echo '</tr>';
                 }
                 ?>
-            </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 
 </body>
 

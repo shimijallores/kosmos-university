@@ -17,3 +17,5 @@ Admin Portal Program
 Student Portal Program
 ❌ Authentication
 ❌ Grades display
+
+❌Design Overhaul for Mobile Responsiveness 
