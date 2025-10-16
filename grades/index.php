@@ -103,7 +103,7 @@ $semesters = $stmt->fetchAll();
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:justify-end w-full">
                 <h1 class="text-lg sm:text-xl">Semester</h1>
                 <select name="sort" id="sort" @change="window.location.href = `index.php?semester=${$event.target.value}`"
-                    class="py-1 px-2 w-full sm:w-auto">
+                    class="py-1 px-2 border border-black w-full sm:w-auto">
                     <?php foreach ($semesters as $semester) : ?>
                         <option value="<?= $semester['code'] ?>"
                             <?= $semester['code'] === $_GET['semester'] ? 'selected' : '' ?>>
@@ -134,13 +134,13 @@ $semesters = $stmt->fetchAll();
                         <tr class="hover:bg-gray-100">
                             <td class="px-2 py-2"><?= ($key + 1) . ". " . $subject['code'] ?? '' ?></td>
                             <td class="px-2 py-2"><?= substr($subject['description'] ?? '', 0, 100) . '...' ?></td>
-                            <td class="border border-black px-2 py-2 text-center">
-                                <?= $subject['midterm_grade'] ? number_format((float)$subject['midterm_grade'], 2) : '-' ?>
+                            <td class=" px-2 py-2 text-center">
+                                <?= $subject['midterm_grade'] != '0.00' ? number_format((float)$subject['midterm_grade'], 2) : '-' ?>
                             </td>
-                            <td class="border border-black px-2 py-2 text-center">
-                                <?= $subject['final_course_grade'] ? number_format((float)$subject['final_course_grade'], 2) : '-' ?>
+                            <td class=" px-2 py-2 text-center">
+                                <?= $subject['final_course_grade'] != '0.00' ? number_format((float)$subject['final_course_grade'], 2) : '-' ?>
                             </td>
-                            <td class="border border-black px-2 py-2">
+                            <td class=" px-2 py-2">
                                 <button @click="openGradeModal(<?= $subject['id'] ?>, '<?= $subject['midterm_grade'] ? number_format((float)$subject['midterm_grade'], 2) : '' ?>', '<?= $subject['final_course_grade'] ? number_format((float)$subject['final_course_grade'], 2) : '' ?>')"
                                     class="bg-neutral-800 hover:bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded w-full sm:w-auto">
                                     Input Grades
