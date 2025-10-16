@@ -5,7 +5,13 @@ require('partials/database.php');
 session_start();
 
 if (isset($_SESSION['user'])) {
-  header('location: index.php');
+  if ($_SESSION['user']['role'] === 'admin') {
+    header('location: index.php');
+  } elseif ($_SESSION['user']['role'] === 'student') {
+    header('location: student/index.php');
+  } else {
+    header('location: index.php');
+  }
   exit();
 }
 
@@ -20,7 +26,13 @@ if (!empty($_POST['name'])) {
   if (!empty($user)) {
     if ($password === $user['password']) {
       $_SESSION['user'] = $user;
-      header('location: index.php');
+
+      // Redirect based on user role
+      if ($user['role'] === 'admin') {
+        header('location: index.php');
+      } elseif ($user['role'] === 'student') {
+        header('location: student/index.php');
+      }
       exit();
     }
   }

@@ -35,6 +35,13 @@ try {
 
   $student_id = $connection->lastInsertId();
 
+  // Create user account for the student
+  $stmt = $connection->prepare("
+    INSERT INTO users (name, password, role)
+    VALUES (?, ?, 'student')
+  ");
+  $stmt->execute([$student_number, $student_number]);
+
   // Store success message in session
   $_SESSION['enrollment_success'] = [
     'student_number' => $student_number,

@@ -12,7 +12,7 @@ if (empty($_SESSION['user'])) {
 }
 
 # Get student info and grades
-$student_number = $_SESSION['student_number'];
+$student_number = $_GET['student'] ?? $_SESSION['student_number'];
 $semester_code = $_GET['semester'];
 
 $stmt = $connection->prepare("

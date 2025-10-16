@@ -55,7 +55,7 @@ if (!$success && !$error) {
               Your subjects will be assigned by an administrator.
             </p>
             <p class="text-sm text-gray-600">
-              Please save your student number for future logins.
+              Please save your student number for future logins. Your default password is your student number.
             </p>
           </div>
         </div>
