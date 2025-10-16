@@ -70,41 +70,39 @@ $semesters = $stmt->fetchAll();
     <button class="bg-blue-500 mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
         <a href="/index.php">Back to Menu</a>
     </button>
-    <form method="POST" action="index.php?semester=<?= $_GET['semester'] ?>" class="w-3/4 flex gap-x-2 items-center">
+    <form method="POST" action="index.php?semester=<?= $_GET['semester'] ?>" class="w-full md:max-w-3/4 mx-auto px-4 flex flex-col sm:flex-row gap-2 items-start sm:items-center">
         <template x-if="studentNumber">
-            <h1 class="text-3xl font-bold mt-6">Input# <input type="text" name="student_number"
-                    class="border font-medium border-black rounded-sm px-2" placeholder="" :value="studentNumber"></h1>
+            <h1 class="text-2xl font-bold mt-6">Input# <input type="text" name="student_number"
+                    class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto" placeholder="" :value="studentNumber"></h1>
         </template>
         <template x-if="!studentNumber">
-            <h1 class="text-3xl font-bold mt-6">Input# <input type="text" name="student_number"
-                    class="border font-medium border-black rounded-sm px-2" placeholder=""
+            <h1 class="text-2xl font-bold mt-6">Input# <input type="text" name="student_number"
+                    class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto" placeholder=""
                     value="<?= $_SESSION['student_number'] ?? '' ?>"></h1>
         </template>
 
-        <button type="submit"
-            class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded">Search</button>
-        <button type="button" @click="searchOpen = true"
-            class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded">🔍</button>
+        <div class="flex gap-2 mt-4 sm:mt-6">
+            <button type="submit"
+                class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">Search</button>
+            <button type="button" @click="searchOpen = true"
+                class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">🔍</button>
+        </div>
     </form>
 
     <?php if (!empty($_SESSION['student_number']) && $student) : ?>
-        <div class="w-3/4 flex gap-x-2 flex-col mb-6">
-            <h1 class="text-3xl font-bold mt-6">Name: <input type="text"
-                    class="border font-medium border-black rounded-sm px-2" value="<?= $student['student_name'] ?? '' ?>"
+        <div class="w-full md:max-w-3/4 mx-auto px-4 flex flex-col gap-4 mb-6">
+            <h1 class="text-2xl font-bold mt-6">Name: <input type="text"
+                    class="border font-medium border-black rounded-sm px-2 w-full md:w-auto" value="<?= $student['student_name'] ?? '' ?>"
                     readonly>
             </h1>
-            <h1 class="text-3xl font-bold mt-6">Course: <input type="text"
-                    class="border font-medium border-black rounded-sm px-2" value="<?= $student['course_name'] ?? '' ?>"
+            <h1 class="text-2xl font-bold">Course: <input type="text"
+                    class="border font-medium border-black rounded-sm px-2 w-full md:w-auto" value="<?= $student['course_name'] ?? '' ?>"
                     readonly>
             </h1>
-            <h1 class="text-3xl font-bold mt-6">Semester: <input type="text"
-                    class="border font-medium border-black rounded-sm px-2" value="<?= $_GET['semester'] ?>" readonly>
-            </h1>
-
-            <div class="flex items-center w-full justify-end gap-x-3">
-                <h1 class="text-xl">Semester</h1>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:justify-end w-full">
+                <h1 class="text-lg sm:text-xl">Semester</h1>
                 <select name="sort" id="sort" @change="window.location.href = `index.php?semester=${$event.target.value}`"
-                    class="border border-black py-1 px-2">
+                    class="py-1 px-2 w-full sm:w-auto">
                     <?php foreach ($semesters as $semester) : ?>
                         <option value="<?= $semester['code'] ?>"
                             <?= $semester['code'] === $_GET['semester'] ? 'selected' : '' ?>>
@@ -119,60 +117,52 @@ $semesters = $stmt->fetchAll();
 
     <!-- Student Subject table -->
     <?php if (!empty($_SESSION['student_number']) && $student) : ?>
-        <br class=" w-3/4 border border-black my-4">
-        <table class="w-3/4 text-sm text-left rtl:text-right text-gray-500">
-            <thead class="text-xs text-white uppercase bg-blue-500 ">
-
-                <tr>
-                    <th scope="col" class="px-6 py-3">
-                        Subject Code
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Description
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Midterm Grades
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Final Course Grade
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Actions
-                    </th>
-                </tr>
-
-            </thead>
-            <tbody>
-                <?php foreach ($student_subjects as $key => $subject) : ?>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <?= ($key + 1) . ". " . $subject['code'] ?? '' ?></th>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <?= substr($subject['description'] ?? '', 0, 100) . '...'  ?></th>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <?= $subject['midterm_grade'] ?? '' ?></th>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <?= $subject['final_course_grade'] ?? '' ?></th>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <button @click="open = true"
-                                class="bg-neutral-800 mr-2 hover:bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded">
-                                Input Grades
-                            </button>
-                        </th>
+        <div class="w-full md:max-w-3/4 mx-auto px-4 overflow-x-auto">
+            <table class="w-full border-collapse border ">
+                <thead>
+                    <tr class="bg-blue-500 text-white">
+                        <th class="px-2 py-2 text-left min-w-[150px]">Subject Code</th>
+                        <th class="px-2 py-2 text-left min-w-[300px]">Description</th>
+                        <th class="px-2 py-2 text-left min-w-[100px]">Midterm</th>
+                        <th class="px-2 py-2 text-left min-w-[100px]">Final</th>
+                        <th class="px-2 py-2 text-left min-w-[100px]">Action</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-
-        <br class="w-3/4 border border-black my-4">
-
-        <div class="w-3/4 flex gap-x-2 items-center">
-            <button type="submit" class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded"><a
-                    target="_blank" href="print.php?semester=<?= $_GET['semester'] ?>">Print</a></button>
-            <button type="submit" class="bg-neutral-900 mt-6 cursor-pointer text-white font-bold py-2 px-4 rounded"><a
-                    href="/index.php?semester<?= $_GET['semester'] ?>">Close</a></button>
+                </thead>
+                <tbody>
+                    <?php foreach ($student_subjects as $key => $subject) : ?>
+                        <tr class="hover:bg-gray-100">
+                            <td class="px-2 py-2"><?= ($key + 1) . ". " . $subject['code'] ?? '' ?></td>
+                            <td class="px-2 py-2"><?= substr($subject['description'] ?? '', 0, 100) . '...' ?></td>
+                            <td class="px-2 py-2">
+                                <input type="number" step="0.01" min="0" max="100"
+                                    class="w-full border border-gray-300 rounded px-2 py-1"
+                                    value="<?= $subject['midterm_grade'] ?? '' ?>"
+                                    readonly>
+                            </td>
+                            <td class="px-2 py-2">
+                                <input type="number" step="0.01" min="0" max="100"
+                                    class="w-full border border-gray-300 rounded px-2 py-1"
+                                    value="<?= $subject['final_course_grade'] ?? '' ?>"
+                                    readonly>
+                            </td>
+                            <td class="px-2 py-2">
+                                <button @click="open = true"
+                                    class="bg-neutral-800 hover:bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded w-full sm:w-auto">
+                                    Input Grades
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
 
+        <div class="w-full md:max-w-3/4 mx-auto px-4 flex flex-col sm:flex-row gap-2 items-center justify-center md:justify-start mt-6">
+            <button type="submit" class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded w-full sm:w-auto"><a
+                    target="_blank" href="print.php?semester=<?= $_GET['semester'] ?>">Print</a></button>
+            <button type="submit" class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded w-full sm:w-auto"><a
+                    href="/index.php?semester<?= $_GET['semester'] ?>">Close</a></button>
+        </div>
     <?php endif; ?>
 </body>
 
