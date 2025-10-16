@@ -85,13 +85,14 @@ CREATE TABLE IF NOT EXISTS `student_subjects` (
   CONSTRAINT `FK_student_subjects_semesters` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_student_subjects_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_student_subjects_subjects` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.student_subjects: ~3 rows (approximately)
+-- Dumping data for table unicore.student_subjects: ~0 rows (approximately)
 INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`, `midterm_grade`, `final_course_grade`) VALUES
 	(2, 2, 1, 1, 0.000000, 0.000000),
-	(4, 3, 3, 1, 0.000000, 0.000000),
-	(7, 1, 3, 1, 0.000000, 0.000000);
+	(4, 3, 3, 1, 1.000000, 1.750000),
+	(7, 1, 3, 1, 0.000000, 0.000000),
+	(8, 1, 3, 2, 1.000000, 2.500000);
 
 -- Dumping structure for table unicore.subjects
 CREATE TABLE IF NOT EXISTS `subjects` (
@@ -135,12 +136,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(250) NOT NULL,
   `password` varchar(250) NOT NULL,
+  `role` varchar(50) NOT NULL DEFAULT 'student',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.users: ~0 rows (approximately)
-INSERT INTO `users` (`id`, `name`, `password`) VALUES
-	(1, 'shimi', 'shimi');
+-- Dumping data for table unicore.users: ~1 rows (approximately)
+INSERT INTO `users` (`id`, `name`, `password`, `role`) VALUES
+	(1, 'shimi', 'shimi', 'admin');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

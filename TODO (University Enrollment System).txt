@@ -16,7 +16,7 @@ Admin Portal Program
 ✅ Grades feature - [module for grade input (combobox), print grades, "pick students, pick sem, show subjects and input midterms and final course grade"]
 
 Student Portal Program
-❌ Enrollment feature - [ form asks for name, gender, course, semester] 
+✅ Enrollment feature - [ form asks for name, gender, course, semester] 
 ❌ Authentication
 ❌ Grades display
 
