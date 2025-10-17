@@ -3,6 +3,8 @@
 require('../functions.php');
 require('../partials/database.php');
 
+
+session_start();
 # Fetch semester id
 $stmt = $connection->prepare("
     select id from semesters where code = ?
@@ -31,7 +33,7 @@ if (is_null($subject['midterm_grade']) && is_null($subject['final_course_grade']
     header("Location: index.php?semester={$_POST['semester_code']}");
     exit();
 } else {
-    $_SESSION['redirect'] = 'index.php';
+    $_SESSION['redirect'] = "index.php?semester={$_POST['semester_code']}";
 
     header("Location: failed.php");
     exit();
