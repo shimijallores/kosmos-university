@@ -1,7 +1,7 @@
  <div x-cloak x-show="deleteModal" x-transition.opacity.duration.200ms x-on:keydown.esc.window="deleteModal = false"
      x-on:click.self="deleteModal = false"
-     class="fixed inset-0 z-30 flex items-center justify-center bg-black/20 p-4 backdrop-blur-md sm:p-8"
-     role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
+     class="fixed inset-0 z-30 flex items-center justify-center bg-black/20 p-4 backdrop-blur-md sm:p-8" role="dialog"
+     aria-modal="true" aria-labelledby="defaultModalTitle">
      <!-- Modal Dialog -->
      <form action="destroy.php" method="POST" x-show="deleteModal"
          x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
@@ -11,7 +11,7 @@
          <div
              class="flex items-center justify-between border-b border-neutral-300 bg-neutral-50/60 p-4 dark:border-neutral-700 dark:bg-neutral-950/20">
              <h3 id="defaultModalTitle" class="font-semibold tracking-wide text-neutral-900 dark:text-white">
-                 Delete Course</h3>
+                 Delete Semester</h3>
              <button x-on:click="deleteModal = false" aria-label="close modal">
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor"
                      fill="none" stroke-width="1.4" class="w-5 h-5">
@@ -21,8 +21,8 @@
          </div>
          <!-- Dialog Body -->
          <div class="px-4 py-8">
-             <input type="hidden" name="course_id" :value="deleteId">
-             <p>Are you sure you want to delete this course? This action cannot be undone.</p>
+             <input type="hidden" name="semester_id" :value="deleteId">
+             <p>Are you sure you want to delete this semester? This action cannot be undone.</p>
          </div>
          <!-- Dialog Footer -->
          <div

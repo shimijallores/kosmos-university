@@ -6,20 +6,20 @@ require('../partials/database.php');
 session_start();
 
 $stmt = $connection->prepare("
-    select * from students where course_id = ?;
+    select * from student_subjects where semester_id = ?;
 ");
 
-$stmt->execute([$_POST['course_id']]);
+$stmt->execute([$_POST['semester_id']]);
 
 $students = $stmt->fetchAll();
 
 if (empty($students)) {
     // Delete from course table
     $stmt = $connection->prepare("
-    delete from courses where course_id = ?
+    delete from semesters where id = ?
 ");
 
-    $stmt->execute([$_POST['course_id']]);
+    $stmt->execute([$_POST['semester_id']]);
 
     header("Location: index.php");
     exit();
