@@ -23,6 +23,9 @@ if (empty($_SESSION['user'])) {
         <a href="grades/index.php?semester=1st25-26">Grades</a>
     </button>
     <button class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
+        <a href="semesters/index.php?semester=1st25-26">Semesters</a>
+    </button>
+    <button class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
         <a href="list.php">List</a>
     </button>
     <button class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
