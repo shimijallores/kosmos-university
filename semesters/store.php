@@ -11,7 +11,7 @@ try {
     insert into semesters (code, start_date, end_date, summer) values (?, ?, ?, ?);
 ");
 
-    $summer = $_POST['summer'] == 'on' ? 'Y' : 'N';
+    $summer = $_POST['type'] == 'on' ? 'Y' : 'N';
 
     $stmt->execute([$_POST['code'], $_POST['start_date'], $_POST['end_date'], $summer]);
 } catch (Exception $e) {
