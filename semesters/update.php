@@ -5,20 +5,11 @@ require('../partials/database.php');
 
 session_start();
 
-try {
-    // Update student
-    $stmt = $connection->prepare("
-    update courses set code = ?, name = ? where course_id = ?;
-");
+$stmt = $connection->prepare("update semesters set code = ?, start_date = ?, end_date = ?, summer = ? where id = ?");
 
-    $stmt->execute([$_POST['code'], $_POST['name'], $_POST['course_id']]);
-} catch (Exception $e) {
-    $_SESSION['redirect'] = 'edit.php?id=' . $_POST['course_id'];
+$summer = $_POST['summer'] == 'on' ? 'Y' : 'N';
 
-    header("Location: 404.php");
-    exit();
-}
-
+$stmt->execute([$_POST['code'], $_POST['start_date'], $_POST['end_date'], $summer, $_POST['semester_id'],]);
 
 header("Location: index.php");
 exit();
