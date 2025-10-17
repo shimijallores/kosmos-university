@@ -14,15 +14,14 @@ $semester = $stmt->fetch();
 
 # Fetch subject id
 $stmt = $connection->prepare("
-    select midterm_grade, final_course_grade from student_subjects where subject_id = ? and semester_id = ?
+    select midterm_grade, final_course_grade from student_subjects where subject_id = ? and semester_id = ? and student_id = ?
     ");
 
-$stmt->execute([$_POST['subject_id'], $semester['id']]);
+$stmt->execute([$_POST['subject_id'], $semester['id'], $_POST['student_id']]);
 
 $subject = $stmt->fetch();
-
 // Delete from students table
-if (empty($subject) || $subject[0] === '' || ($subject['midterm_grade'] === '0.000000' && $subject['final_course_grade'] === '0.000000')) {
+if (is_null($subject['midterm_grade']) && is_null($subject['final_course_grade'])) {
     $stmt = $connection->prepare("
     delete from student_subjects where subject_id = ? and student_id = ? and semester_id = ?
 ");

@@ -1,7 +1,7 @@
  <div x-cloak x-show="open" x-transition.opacity.duration.200ms x-on:keydown.esc.window="open = false"
      x-on:click.self="open = false"
-     class="fixed inset-0 z-30 flex items-center justify-center bg-black/20 p-4 backdrop-blur-md sm:p-8"
-     role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
+     class="fixed inset-0 z-30 flex items-center justify-center bg-black/20 p-4 backdrop-blur-md sm:p-8" role="dialog"
+     aria-modal="true" aria-labelledby="defaultModalTitle">
      <!-- Modal Dialog -->
      <form action="update.php" method="POST" x-show="open"
          x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
@@ -26,9 +26,12 @@
          <!-- Dialog Body -->
          <div class="px-4 py-8 flex flex-col gap-y-4">
              <div>
-                 <label for="midterm_grade" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Midterm Grade:</label>
-                 <select name="midterm_grade" class="border w-full border-neutral-200 px-3 py-2 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                     <option value="0.0">Select Grade</option>
+                 <label for="midterm_grade"
+                     class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Midterm
+                     Grade:</label>
+                 <select name="midterm_grade"
+                     class="border w-full border-neutral-200 px-3 py-2 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                     <option value="null">Select Grade</option>
                      <option value="1.00" :selected="selectedMidtermGrade == '1.00'">1.00</option>
                      <option value="1.25" :selected="selectedMidtermGrade == '1.25'">1.25</option>
                      <option value="1.50" :selected="selectedMidtermGrade == '1.50'">1.50</option>
@@ -43,9 +46,12 @@
                  </select>
              </div>
              <div>
-                 <label for="final_course_grade" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Final Course Grade:</label>
-                 <select name="final_course_grade" class="border w-full border-neutral-200 px-3 py-2 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                     <option value="0.0">Select Grade</option>
+                 <label for="final_course_grade"
+                     class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Final Course
+                     Grade:</label>
+                 <select name="final_course_grade"
+                     class="border w-full border-neutral-200 px-3 py-2 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                     <option value="null">Select Grade</option>
                      <option value="1.00" :selected="selectedFinalGrade == '1.00'">1.00</option>
                      <option value="1.25" :selected="selectedFinalGrade == '1.25'">1.25</option>
                      <option value="1.50" :selected="selectedFinalGrade == '1.50'">1.50</option>
@@ -66,7 +72,8 @@
              <button x-on:click="open = false" type="button"
                  class="whitespace-nowrap rounded-sm px-4 py-2 text-center text-sm font-medium tracking-wide text-neutral-600 transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:opacity-100 active:outline-offset-0 dark:text-neutral-300 dark:focus-visible:outline-white">Cancel</button>
              <button type="submit"
-                 class="whitespace-nowrap rounded-sm bg-neutral-800 px-4 py-2 text-center text-sm font-medium tracking-wide text-white transition hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:opacity-100 active:outline-offset-0">Update Grades</button>
+                 class="whitespace-nowrap rounded-sm bg-neutral-800 px-4 py-2 text-center text-sm font-medium tracking-wide text-white transition hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:opacity-100 active:outline-offset-0">Update
+                 Grades</button>
          </div>
      </form>
  </div>

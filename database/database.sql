@@ -79,8 +79,8 @@ CREATE TABLE IF NOT EXISTS `student_subjects` (
   `subject_id` int DEFAULT NULL,
   `student_id` int DEFAULT NULL,
   `semester_id` int DEFAULT NULL,
-  `midterm_grade` decimal(20,6) NOT NULL DEFAULT '0.000000',
-  `final_course_grade` decimal(20,6) NOT NULL DEFAULT '0.000000',
+  `midterm_grade` decimal(20,6) DEFAULT NULL,
+  `final_course_grade` decimal(20,6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_student_subjects_semesters` (`semester_id`),
   KEY `FK_student_subjects_students` (`student_id`),
@@ -92,12 +92,12 @@ CREATE TABLE IF NOT EXISTS `student_subjects` (
 
 -- Dumping data for table unicore.student_subjects: ~6 rows (approximately)
 INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`, `midterm_grade`, `final_course_grade`) VALUES
-	(2, 2, 1, 1, 4.000000, 0.000000),
+	(2, 2, 1, 1, 4.000000, NULL),
 	(4, 3, 3, 1, 1.000000, 1.750000),
-	(7, 1, 3, 1, 0.000000, 0.000000),
-	(8, 1, 3, 2, 1.000000, 0.000000),
-	(9, 3, 1, 1, 0.000000, 0.000000),
-	(11, 3, 1, 2, 0.000000, 0.000000);
+	(7, 1, 3, 1, NULL, NULL),
+	(8, 1, 3, 2, 1.000000, NULL),
+	(9, 3, 1, 1, NULL, NULL),
+	(11, 3, 1, 2, NULL, NULL);
 
 -- Dumping structure for table unicore.subjects
 CREATE TABLE IF NOT EXISTS `subjects` (
