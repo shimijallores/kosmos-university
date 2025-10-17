@@ -57,7 +57,7 @@ $_SESSION['message'] = '';
         <div class="flex flex-col justify-start gap-y-2 mt-2 border border-blue-300 p-10 rounded">
             <div>
                 <label>Username</label>
-                <input type="text" name="name" class="px-2 py-1 rounded border border-neutral-200">
+                <input type="text" name="name" autofocus class="px-2 py-1 rounded border border-neutral-200">
             </div>
 
 
@@ -75,12 +75,7 @@ $_SESSION['message'] = '';
                 class="bg bg-blue-600 px-2 py-1 text-white w-full text-center rounded-md hover:opacity-80 cursor-pointer transition duration-200">Login</button>
 
             <div class="mt-4 text-center space-y-2">
-                <p class="text-sm text-gray-600">
-                    New student?
-                    <a href="enrollment/index.php" class="text-blue-600 hover:text-blue-800 font-medium">
-                        Enroll here
-                    </a>
-                </p>
+
                 <p class="text-sm text-gray-600">
                     <a href="menu.php" class="text-gray-600 hover:text-gray-800 font-medium">
                         ← Back to Main Menu

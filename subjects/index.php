@@ -101,7 +101,7 @@ $semesters = $stmt->fetchAll();
                     :value="studentNumber"></h1>
         </template>
         <template x-if="!studentNumber">
-            <h1 class="text-2xl font-bold mt-6">Input# <input type="text" name="student_number"
+            <h1 class="text-2xl font-bold mt-6">Input# <input autofocus type="text" name="student_number"
                     class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto" placeholder=""
                     value="<?= $_SESSION['student_number'] ?? '' ?>"></h1>
         </template>

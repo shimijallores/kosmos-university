@@ -75,11 +75,10 @@ $pdf->Ln(5);
 // Grades Table Header
 $pdf->SetFont('Arial', 'B', 12);
 $pdf->Cell(20, 10, 'Code', 1, 0, 'C');
-$pdf->Cell(80, 10, 'Subject Description', 1, 0, 'C');
+$pdf->Cell(100, 10, 'Subject Description', 1, 0, 'C');
 $pdf->Cell(15, 10, 'Units', 1, 0, 'C');
 $pdf->Cell(20, 10, 'Midterm', 1, 0, 'C');
-$pdf->Cell(20, 10, 'Final', 1, 0, 'C');
-$pdf->Cell(20, 10, 'Status', 1, 1, 'C');
+$pdf->Cell(20, 10, 'Final', 1, 1, 'C');
 
 // Grades Table Body
 $pdf->SetFont('Arial', '', 10);
@@ -87,11 +86,10 @@ foreach ($student_subjects as $subject) {
     $status = $subject['final_course_grade'] >= 1.0 && $subject['final_course_grade'] <= 3.0 ? 'Passed' : 'Failed';
 
     $pdf->Cell(20, 8, $subject['code'], 1, 0, 'C');
-    $pdf->Cell(80, 8, substr($subject['description'], 0, 35) . (strlen($subject['description']) > 35 ? '...' : ''), 1, 0, 'L');
+    $pdf->Cell(100, 8, substr($subject['description'], 0, 35) . (strlen($subject['description']) > 35 ? '...' : ''), 1, 0, 'L');
     $pdf->Cell(15, 8, $subject['units'], 1, 0, 'C');
     $pdf->Cell(20, 8, $subject['midterm_grade'] ? number_format((float)$subject['midterm_grade'], 2) : '-', 1, 0, 'C');
-    $pdf->Cell(20, 8, $subject['final_course_grade'] ? number_format((float)$subject['final_course_grade'], 2) : '-', 1, 0, 'C');
-    $pdf->Cell(20, 8, $status, 1, 1, 'C');
+    $pdf->Cell(20, 8, $subject['final_course_grade'] ? number_format((float)$subject['final_course_grade'], 2) : '-', 1, 1, 'C');
 }
 
 // GPA Summary

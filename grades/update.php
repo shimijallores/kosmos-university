@@ -15,8 +15,7 @@ $stmt = $connection->prepare("
         );
     ");
 
-
-$midterms = $_POST['midterms_grade'] == 'null' ? NULL : $_POST['midterms_grade'];
+$midterms = $_POST['midterm_grade'] == 'null' ? NULL : $_POST['midterm_grade'];
 $finals = $_POST['final_course_grade'] == 'null' ? NULL : $_POST['final_course_grade'];
 $stmt->execute([
     $midterms,

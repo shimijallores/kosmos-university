@@ -82,9 +82,7 @@ $semesters = $stmt->fetchAll();
 
                     echo '<td class="px-2 sm:px-6 py-4">';
                     echo '<div class="flex flex-col sm:flex-row gap-1">';
-                    echo '<button class="bg-blue-500 text-xs hover:bg-blue-700 cursor-pointer text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded">';
-                    echo "<a href='edit.php?id={$semester["id"]}'>Edit</a>";
-                    echo '</button>';
+                    echo "<a class='bg-blue-500 text-xs hover:bg-blue-700 cursor-pointer text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded' href='edit.php?id={$semester["id"]}'>Edit</a>";
 
                     echo '<button @click="deleteModal = true; deleteId = ' . $semester["id"] . '; console.log(deleteId)"';
                     echo ' class="bg-red-500 text-xs hover:bg-red-700 cursor-pointer text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded">';
