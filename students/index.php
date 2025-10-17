@@ -23,19 +23,20 @@ $students = $stmt->fetchAll();
     <!-- Delete Modal -->
     <?php require('delete.php') ?>
 
-    <button class="bg-blue-500 mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
-        <a href="/index.php">Back to Menu</a>
-    </button>
+    <a href="/index.php"
+        class="bg-blue-500 text-center mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Back to
+        Menu</a>
     <div class="w-full md:max-w-3/4 px-4 md:px-0 mx-auto px-4 gap-x-4 flex justify-between items-center">
         <h1 class="text-2xl font-bold mt-6">STUDENTS</h1>
-        <button class="bg-neutral-900 text-xs sm:text-lg mt-6 w-32 sm:w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
-            <a href="create.php">Add student</a>
-        </button>
+        <a href="create.php"
+            class="bg-neutral-900 text-xs text-center sm:text-lg mt-6 w-32 sm:w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Add
+            student</a>
     </div>
 
     <!-- Students table -->
     <div class="w-full flex md:justify-center overflow-x-auto">
-        <table class="w-full min-w-[500px] max-w-3/4 text-xs sm:text-sm border border-blue-500 text-left rtl:text-right text-gray-500">
+        <table
+            class="w-full min-w-[500px] max-w-3/4 text-xs sm:text-sm border border-blue-500 text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-white uppercase bg-blue-500">
                 <tr>
                     <th scope="col" class="px-2 sm:px-6 py-3">
@@ -77,9 +78,7 @@ $students = $stmt->fetchAll();
 
                     echo '<td class="px-2 sm:px-6 py-4">';
                     echo '<div class="flex flex-col sm:flex-row gap-1">';
-                    echo '<button class="bg-blue-500 text-xs hover:bg-blue-700 cursor-pointer text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded">';
-                    echo "<a href='edit.php?id={$student["student_id"]}'>Edit</a>";
-                    echo '</button>';
+                    echo "<a class='bg-blue-500 text-xs hover:bg-blue-700 cursor-pointer text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded' href='edit.php?id={$student["student_id"]}'>Edit</a>";
 
                     echo '<button @click="deleteModal = true; deleteId = ' . $student["student_id"] . '; console.log(deleteId)"';
                     echo ' class="bg-red-500 text-xs hover:bg-red-700 cursor-pointer text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded">';

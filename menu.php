@@ -11,15 +11,12 @@ require('partials/head.php');
         <p class="text-gray-600">Welcome to the University Enrollment System</p>
     </div>
 
-    <button class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
-        <a href="enrollment/index.php">Enrollment</a>
-    </button>
-    <button class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
-        <a href="login.php">Student Login</a>
-    </button>
-    <button class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
-        <a href="login.php">Admin Login</a>
-    </button>
+    <a href="login.php"
+        class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-center text-white font-bold py-2 px-4 rounded">Student
+        Login</a>
+    <a href="login.php"
+        class="bg-blue-500 text-center hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Admin
+        Login</a>
 </body>
 
 <?php

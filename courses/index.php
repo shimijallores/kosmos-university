@@ -20,19 +20,19 @@ $courses = $stmt->fetchAll();
     <!-- Delete Modal -->
     <?php require('delete.php') ?>
 
-    <button class="bg-blue-500 mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
-        <a href="/index.php">Back to Menu</a>
-    </button>
+    <a href="/index.php"
+        class="bg-blue-500 text-center mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Back to
+        Menu</a>
     <div class="w-full md:max-w-3/4 mx-auto px-4 md:px-0 gap-x-4 flex justify-between items-center">
         <h1 class="text-2xl font-bold mt-6">COURSES</h1>
-        <button class="bg-neutral-900 text-xs sm:text-lg mt-6 w-32 sm:w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
-            <a href="create.php">Add a course</a>
-        </button>
+        <a href="create.php" class="bg-neutral-900 text-center text-xs sm:text-lg mt-6 w-32 sm:w-40 cursor-pointer text-white font-bold py-2 px-4
+        rounded">Add a course</a>
     </div>
 
     <!-- courses table -->
     <div class="w-full flex md:justify-center overflow-x-auto">
-        <table class="w-full min-w-[500px] max-w-3/4 text-xs sm:text-sm border border-blue-500 text-left rtl:text-right text-gray-500">
+        <table
+            class="w-full min-w-[500px] max-w-3/4 text-xs sm:text-sm border border-blue-500 text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-white uppercase bg-blue-500">
                 <tr>
                     <th scope="col" class="px-2 sm:px-6 py-3">

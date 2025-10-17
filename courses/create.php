@@ -4,9 +4,8 @@ require('../partials/head.php');
 ?>
 
 <body class="flex justify-content flex-col items-center gap-y-6">
-    <button class="bg-blue-500 mt-6 w-50 cursor-pointer text-white font-bold py-2 px-4 rounded">
-        <a href="index.php">Back to Students</a>
-    </button>
+    <a href="index.php"
+        class="bg-blue-500 text-center mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Back</a>
     <div class="w-3/4 flex justify-between items-center">
         <h1 class="text-3xl font-bold mt-6">CREATE NEW COURSE</h1>
     </div>

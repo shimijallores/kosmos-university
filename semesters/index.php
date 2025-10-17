@@ -20,15 +20,13 @@ $semesters = $stmt->fetchAll();
     <!-- Delete Modal -->
     <?php require('delete.php') ?>
 
-    <button class="bg-blue-500 mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
-        <a href="/index.php">Back to Menu</a>
-    </button>
+    <a href="/index.php"
+        class="bg-blue-500 text-center mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Back</a>
     <div class="w-full md:max-w-3/4 mx-auto px-4 md:px-0 gap-x-4 flex justify-between items-center">
         <h1 class="text-2xl font-bold mt-6">SEMESTERS</h1>
-        <button
-            class="bg-neutral-900 text-xs sm:text-base mt-6 w-32 sm:w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">
-            <a href="create.php">Add a semester</a>
-        </button>
+        <a href="create.php"
+            class="bg-neutral-900 text-center text-xs sm:text-base mt-6 w-32 sm:w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Add
+            a semester</a>
     </div>
 
     <!-- semesters table -->

@@ -21,36 +21,36 @@ $student_number = sprintf("S%s%03d", $current_year, $next_num);
 
 // Insert new student
 try {
-  $stmt = $connection->prepare("
+    $stmt = $connection->prepare("
         INSERT INTO students (student_number, name, gender, course_id)
         VALUES (?, ?, ?, ?)
     ");
 
-  $stmt->execute([
-    $student_number,
-    $_POST['student_name'],
-    $_POST['gender'],
-    $_POST['course']
-  ]);
+    $stmt->execute([
+        $student_number,
+        $_POST['student_name'],
+        $_POST['gender'],
+        $_POST['course']
+    ]);
 
-  $student_id = $connection->lastInsertId();
+    $student_id = $connection->lastInsertId();
 
-  // Create user account for the student
-  $stmt = $connection->prepare("
+    // Create user account for the student
+    $stmt = $connection->prepare("
     INSERT INTO users (name, password, role)
     VALUES (?, ?, 'student')
   ");
-  $stmt->execute([$student_number, $student_number]);
+    $stmt->execute([$student_number, $student_number]);
 
-  // Store success message in session
-  $_SESSION['enrollment_success'] = [
-    'student_number' => $student_number,
-    'student_name' => $_POST['student_name']
-  ];
+    // Store success message in session
+    $_SESSION['enrollment_success'] = [
+        'student_number' => $student_number,
+        'student_name' => $_POST['student_name']
+    ];
 } catch (Exception $e) {
-  $_SESSION['enrollment_error'] = 'Enrollment failed. Please try again.';
-  header("Location: index.php");
-  exit();
+    $_SESSION['enrollment_error'] = 'Enrollment failed. Please try again.';
+    header("Location: index.php");
+    exit();
 }
 
 header("Location: success.php");

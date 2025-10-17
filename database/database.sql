@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               8.0.30 - MySQL Community Server - GPL
+-- Server version:               8.4.3 - MySQL Community Server - GPL
 -- Server OS:                    Win64
--- HeidiSQL Version:             12.1.0.6537
+-- HeidiSQL Version:             12.8.0.6908
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `courses` (
   PRIMARY KEY (`course_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.courses: ~0 rows (approximately)
+-- Dumping data for table unicore.courses: ~3 rows (approximately)
 INSERT INTO `courses` (`course_id`, `code`, `name`) VALUES
 	(1, 'CS101', 'Computer Science'),
 	(2, 'IT201', 'Information Technology'),
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.rooms: ~0 rows (approximately)
+-- Dumping data for table unicore.rooms: ~3 rows (approximately)
 INSERT INTO `rooms` (`id`, `name`) VALUES
 	(1, 'Room A'),
 	(2, 'Room B'),
@@ -44,14 +44,17 @@ INSERT INTO `rooms` (`id`, `name`) VALUES
 -- Dumping structure for table unicore.semesters
 CREATE TABLE IF NOT EXISTS `semesters` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `code` varchar(10) DEFAULT NULL,
+  `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `start_date` varchar(50) DEFAULT NULL,
+  `end_date` varchar(50) DEFAULT NULL,
+  `summer` varchar(1) NOT NULL DEFAULT 'N',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.semesters: ~0 rows (approximately)
-INSERT INTO `semesters` (`id`, `code`) VALUES
-	(1, '1st25-26'),
-	(2, '2nd25-26');
+-- Dumping data for table unicore.semesters: ~2 rows (approximately)
+INSERT INTO `semesters` (`id`, `code`, `start_date`, `end_date`, `summer`) VALUES
+	(1, '1st25-26', 'August 7, 2025', 'December 7, 2025', 'N'),
+	(2, '2nd25-26', 'January 7, 2025', 'May 7, 2025', 'N');
 
 -- Dumping structure for table unicore.students
 CREATE TABLE IF NOT EXISTS `students` (
@@ -65,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `students` (
   CONSTRAINT `FK_students_courses` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.students: ~0 rows (approximately)
+-- Dumping data for table unicore.students: ~2 rows (approximately)
 INSERT INTO `students` (`student_id`, `student_number`, `name`, `gender`, `course_id`) VALUES
 	(1, 'S2023001', 'Michael Brown', 'Male', 1),
 	(3, 'S2023003', 'Daniel Wilson', 'Male', 1);
@@ -85,14 +88,16 @@ CREATE TABLE IF NOT EXISTS `student_subjects` (
   CONSTRAINT `FK_student_subjects_semesters` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_student_subjects_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_student_subjects_subjects` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.student_subjects: ~0 rows (approximately)
+-- Dumping data for table unicore.student_subjects: ~6 rows (approximately)
 INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`, `midterm_grade`, `final_course_grade`) VALUES
-	(2, 2, 1, 1, 0.000000, 0.000000),
+	(2, 2, 1, 1, 4.000000, 0.000000),
 	(4, 3, 3, 1, 1.000000, 1.750000),
 	(7, 1, 3, 1, 0.000000, 0.000000),
-	(8, 1, 3, 2, 1.000000, 2.500000);
+	(8, 1, 3, 2, 1.000000, 0.000000),
+	(9, 3, 1, 1, 0.000000, 0.000000),
+	(11, 3, 1, 2, 0.000000, 0.000000);
 
 -- Dumping structure for table unicore.subjects
 CREATE TABLE IF NOT EXISTS `subjects` (
@@ -112,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `subjects` (
   CONSTRAINT `FK_subjects_teachers` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.subjects: ~0 rows (approximately)
+-- Dumping data for table unicore.subjects: ~3 rows (approximately)
 INSERT INTO `subjects` (`id`, `code`, `description`, `days`, `time`, `room_id`, `teacher_id`, `price_unit`, `units`) VALUES
 	(1, 'MATH101', 'Calculus 1', 'Mon/Wed/Fri', '09:00-10:30', 1, 1, 500, 3),
 	(2, 'CS201', 'Data Structures', 'Tue/Thu', '11:00-12:30', 3, 2, 700, 4),
