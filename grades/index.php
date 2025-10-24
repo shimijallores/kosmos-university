@@ -57,8 +57,6 @@ select * from semesters
 $stmt->execute();
 
 $semesters = $stmt->fetchAll();
-
-
 ?>
 
 <body x-data="search(true)" class="flex justify-content flex-col items-center">
