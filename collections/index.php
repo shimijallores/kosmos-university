@@ -67,6 +67,7 @@ $today = date('Y-m-d');
             <input type="number" name="cash" :value="fetchedStudent[1]"
                 class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto">
         </p>
+        <span x-show="fetchedStudent[1]" x-text="'Remaining Balance:' + fetchedStudent[1] "></span>
         <div class="flex gap-x-4">
             <p class="text-2xl font-bold ">Gcash
                 <input type="number" name="gcash"
