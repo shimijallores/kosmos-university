@@ -18,6 +18,10 @@ if (empty($_SESSION['user'])) {
         class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded block text-center">
         Students
     </a>
+    <a href="collections/index.php"
+        class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded block text-center">
+        Collections
+    </a>
     <a href="courses/index.php"
         class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded block text-center">
         Courses

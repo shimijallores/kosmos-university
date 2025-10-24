@@ -14,6 +14,39 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+-- Dumping structure for table unicore.audit_trait
+CREATE TABLE IF NOT EXISTS `audit_trait` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `module` varchar(50) DEFAULT 'Collections',
+  `refno` int DEFAULT NULL,
+  `action` enum('A','E','D') NOT NULL DEFAULT 'A',
+  `datetime` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table unicore.audit_trait: ~0 rows (approximately)
+
+-- Dumping structure for table unicore.collections
+CREATE TABLE IF NOT EXISTS `collections` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `or_number` int NOT NULL,
+  `or_date` int DEFAULT NULL,
+  `student_id` int DEFAULT NULL,
+  `semester_id` int DEFAULT NULL,
+  `cash` decimal(8,2) NOT NULL DEFAULT '0.00',
+  `gcash` int NOT NULL DEFAULT '0',
+  `gcash_refno` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `or_number` (`or_number`),
+  KEY `FK_collections_students` (`student_id`),
+  KEY `FK_collections_semesters` (`semester_id`),
+  CONSTRAINT `FK_collections_semesters` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`),
+  CONSTRAINT `FK_collections_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table unicore.collections: ~0 rows (approximately)
+
 -- Dumping structure for table unicore.courses
 CREATE TABLE IF NOT EXISTS `courses` (
   `course_id` int NOT NULL AUTO_INCREMENT,
@@ -48,13 +81,14 @@ CREATE TABLE IF NOT EXISTS `semesters` (
   `start_date` varchar(50) DEFAULT NULL,
   `end_date` varchar(50) DEFAULT NULL,
   `summer` varchar(1) NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table unicore.semesters: ~2 rows (approximately)
 INSERT INTO `semesters` (`id`, `code`, `start_date`, `end_date`, `summer`) VALUES
 	(1, '1st25-26', 'August 7, 2025', 'December 7, 2025', 'N'),
-	(2, '2nd25-26', 'January 7, 2025', 'May 7, 2025', 'N');
+	(2, '2nd25-26', 'January 7, 20255', 'May 7, 2025', 'N');
 
 -- Dumping structure for table unicore.students
 CREATE TABLE IF NOT EXISTS `students` (
@@ -91,19 +125,17 @@ CREATE TABLE IF NOT EXISTS `student_subjects` (
   CONSTRAINT `FK_student_subjects_subjects` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.student_subjects: ~5 rows (approximately)
+-- Dumping data for table unicore.student_subjects: ~11 rows (approximately)
 INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`, `midterm_grade`, `final_course_grade`) VALUES
-	(2, 2, 1, 1, NULL, NULL),
-	(4, 3, 3, 1, 1.000000, 1.750000),
-	(7, 1, 3, 1, NULL, 1.000000),
+	(4, 3, 3, 1, 2.000000, 1.750000),
+	(7, 1, 3, 1, 1.000000, 1.000000),
 	(8, 1, 3, 2, 1.000000, NULL),
 	(12, 1, 1, 1, NULL, 1.000000),
 	(19, 2, 3, 2, NULL, NULL),
-	(20, 1, 1, 2, NULL, NULL),
 	(21, 2, 1, 2, NULL, NULL),
-	(22, 3, 1, 2, NULL, NULL),
-	(23, 1, 6, 1, NULL, NULL),
-	(24, 2, 6, 1, NULL, NULL),
+	(22, 3, 1, 2, NULL, 1.750000),
+	(23, 1, 6, 1, 2.250000, 2.250000),
+	(24, 2, 6, 1, 2.000000, 2.000000),
 	(25, 1, 6, 2, NULL, NULL),
 	(26, 2, 6, 2, NULL, NULL);
 
@@ -153,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table unicore.users: ~1 rows (approximately)
+-- Dumping data for table unicore.users: ~2 rows (approximately)
 INSERT INTO `users` (`id`, `name`, `password`, `role`) VALUES
 	(1, 'shimi', 'shimi', 'admin'),
 	(2, 'S2025001', 'S2025001', 'student');
