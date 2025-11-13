@@ -2,13 +2,13 @@
 require('../functions.php');
 require('../partials/head.php');
 
-# Auth Barrier
+// Auth Barrier
 if (empty($_SESSION['user'])) {
     header('location: /login.php');
     exit();
 }
 
-# Fetch semesters
+// Fetch semesters
 $stmt = $connection->prepare("
 select * from semesters
 ");
@@ -16,6 +16,7 @@ select * from semesters
 $stmt->execute();
 
 $semesters = $stmt->fetchAll();
+
 
 # Current Day
 $today = date('Y-m-d');
@@ -34,19 +35,24 @@ $today = date('Y-m-d');
             <input type="date" name="date" value="<?= $today; ?>"
                 class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto">
         </p>
+        <!-- OR Number -->
         <p class="text-2xl font-bold ">OR #
-            <input autofocus type="text" name="or_number"
-                class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto" :value="fetchedStudent[0]">
+            <input autofocus type="text" name="or_number" :readonly="fetchedStudent[0] ? true : false"
+                class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto" :class="fetchedStudent[0] ? 'opacity-80' : ''" :value="fetchedStudent[0]">
         </p>
+        <!-- Student Name -->
         <div class="flex gap-x-4 items-center">
-            <p class="text-2xl font-bold ">Student #
-                <input type="text" name="student_number"
+            <p class="text-2xl font-bold ">Student
+                <input type="hidden" name="student_number"
                     class="border font-medium border-black rounded-sm px-2 w-3/4 sm:w-auto" :value="studentNumber">
+                <input type="text" name="student_name" readonly
+                    class="border font-medium border-black rounded-sm px-2 w-3/4 sm:w-auto" :value="studentName">
                 <button type="button" @click="searchOpen = true" x-ref="search_button"
                     class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
                     🔎</button>
             </p>
         </div>
+        <!-- Semester -->
         <div class="flex gap-x-4 w-full">
             <p class="text-2xl font-bold w-full">Semester
                 <select name="semester" class="border font-medium border-black rounded-sm px-2 w-3/4 sm:w-auto">
@@ -63,11 +69,12 @@ $today = date('Y-m-d');
                 </a>
             </p>
         </div>
+        <!-- Payment Methods -->
         <p class="text-2xl font-bold ">Cash
             <input type="number" name="cash" :value="fetchedStudent[1]"
                 class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto">
         </p>
-        <span x-show="fetchedStudent[1]" x-text="'Remaining Balance:' + fetchedStudent[1] "></span>
+        <span class="text-red-600" x-show="fetchedStudent[1]" x-text="'Remaining Balance:' + fetchedStudent[1] "></span>
         <div class="flex gap-x-4">
             <p class="text-2xl font-bold ">Gcash
                 <input type="number" name="gcash"
@@ -90,8 +97,9 @@ $today = date('Y-m-d');
             searchOpen: false,
             message: [],
             studentNumber: '',
+            studentName: '',
             currentSem: '1st25-26',
-            fetchedStudent: null,
+            fetchedStudent: [],
 
             fetchStudent: async function(name) {
                 let response = await fetch(`api.php?name=${name}`);
@@ -104,6 +112,8 @@ $today = date('Y-m-d');
                     `or_api.php?studentNumber=${studentNumber}&semester=${semester}`);
 
                 this.fetchedStudent = await response.json();
+
+                console.log(this.fetchedStudent);
             }
         }))
     })

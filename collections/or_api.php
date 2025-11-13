@@ -3,14 +3,19 @@
 require('../functions.php');
 require('../partials/database.php');
 
-# Fetch OR Number
+// Fetch OR Number 
+// if last OR number is nonexistent, generate a new one, else, just increment from last
 $stmt = $connection->prepare("select or_number from collections order by cast(or_number as unsigned) desc");
-
 $stmt->execute();
 $or_number = $stmt->fetch();
-$or_number = $or_number['or_number'] + 1;
 
-# Current Balance
+if (!$or_number) {
+    $or_number = '0000000001';
+} else {
+    $or_number = str_pad($or_number['or_number'] + 1, 10, '0', STR_PAD_LEFT);
+}
+
+# Fetch Current Balance
 $stmt = $connection->prepare("
 select * from student_subjects ss join subjects s where ss.student_id = (select student_id from students where student_number = ?) and ss.semester_id = (select id from semesters where code = ?) and ss.subject_id = s.id
 ");
@@ -21,6 +26,20 @@ $tuitions = $stmt->fetchAll();
 $total_tuition = 0;
 foreach ($tuitions as $tuition) {
     $total_tuition += floatval($tuition['price_unit']) * intval($tuition['units']);
+}
+
+# Fetch past collections if existent
+$stmt = $connection->prepare("
+select * from collections where student_id = (select student_id from students where student_number = ?) and semester_id = (select id from semesters where code = ?)
+");
+
+$stmt->execute([$_GET['studentNumber'], $_GET['semester']]);
+$payments = $stmt->fetchAll();
+
+$total_payments = 0;
+foreach ($payments as $payment) {
+    $total_tuition -= floatval($payment['cash']);
+    $total_tuition -= floatval($payment['gcash']);
 }
 
 header('Content-Type: application/json');

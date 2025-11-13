@@ -31,7 +31,7 @@
                 <ol class="flex flex-col mt-2 gap-y-1 justify-center items-center w-full">
                     <template x-for="(student, index) in message" :key="student.student_id">
                         <button type="button"
-                            @click="studentNumber = student.student_number; searchOpen = false; fetchORNumber(studentNumber, currentSem)"
+                            @click="studentNumber = student.student_number; studentName = student.name; searchOpen = false; fetchORNumber(studentNumber, currentSem)"
                             class="p-1 border border-neutral-200 w-3/4 bg-neutral-900 text-white hover:opacity-80 cursor-pointer">
                             <li x-text="student.name"></li>
                         </button>
