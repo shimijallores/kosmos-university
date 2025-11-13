@@ -21,6 +21,9 @@ $today = date('Y-m-d');
     <!-- Search Modal -->
     <?php require('search.php') ?>
 
+    <!-- Delete Modal -->
+    <?php require('delete.php') ?>
+
     <a href="/index.php"
         class="bg-blue-500 text-center mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Back</a>
     <form method="POST" action="store.php"
@@ -82,12 +85,18 @@ $today = date('Y-m-d');
                     class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto">
             </p>
             <p class="text-2xl font-bold ">Reference #
-                <input type="number" name="gcash_refno" :value="gcashRef"
+                <input type="text" name="gcash_refno" :value="gcashRef"
                     class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto">
             </p>
         </div>
-        <button type="submit" @click='alert("Collection succesfully submitted!")' class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
-            Submit Collection</button>
+        <!-- Buttons -->
+        <div class="flex gap-4">
+            <button type="button" x-show="deleteOpen" @click="deleteModal = true; deleteId = fetchedStudent[0]" class="bg-red-500 hover:bg-red-700 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
+                Delete Collection</button>
+            <button type="submit" @click='alert("Collection succesfully submitted!")' class="bg-neutral-900 hover:bg-black cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
+                Submit Collection</button>
+        </div>
+
     </form>
 
 </body>
@@ -96,6 +105,9 @@ $today = date('Y-m-d');
     document.addEventListener('alpine:init', () => {
         Alpine.data('search', () => ({
             searchOpen: false,
+            deleteOpen: false,
+            deleteModal: false,
+            deleteId: null,
             message: [],
             studentNumber: '',
             studentName: '',
@@ -142,6 +154,8 @@ $today = date('Y-m-d');
                 this.cash = collection.cash;
                 this.gcash = collection.gcash;
                 this.gcashRef = collection.gcash_refno;
+
+                this.deleteOpen = true;
             },
 
             clearInputs() {
@@ -150,6 +164,8 @@ $today = date('Y-m-d');
                 this.fetchedStudent = [];
                 this.message = [];
                 this.fetchStudent('');
+
+                this.deleteOpen = false;
             }
         }))
     })
