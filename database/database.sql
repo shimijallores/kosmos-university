@@ -25,29 +25,53 @@ CREATE TABLE IF NOT EXISTS `audit_trait` (
   PRIMARY KEY (`id`),
   KEY `FK_audit_trait_users` (`user_id`),
   CONSTRAINT `FK_audit_trait_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.audit_trait: ~0 rows (approximately)
+-- Dumping data for table university.audit_trait: ~14 rows (approximately)
+INSERT INTO `audit_trait` (`id`, `user_id`, `module`, `refno`, `datetime`, `action`) VALUES
+	(1, 1, 'Collections', '0000000004', '2025-11-14 01:55:40', 'A'),
+	(2, 1, 'Collections', '0000000005', '2025-11-14 01:57:45', 'A'),
+	(4, 1, 'Collections', '0000000006', '2025-11-14 02:36:23', 'A'),
+	(5, 1, 'Collections', '0000000006', '2025-11-14 02:45:32', 'E'),
+	(6, 1, 'Collections', '0000000006', '2025-11-14 02:47:48', 'E'),
+	(7, 1, 'Collections', '0000000006', '2025-11-14 02:49:29', 'E'),
+	(8, 1, 'Collections', '0000000006', '2025-11-14 02:49:51', 'E'),
+	(9, 1, 'Collections', '0000000007', '2025-11-14 02:50:05', 'A'),
+	(10, 1, 'Collections', '0000000008', '2025-11-14 02:51:32', 'A'),
+	(11, 1, 'Collections', '0000000008', '2025-11-14 02:52:44', 'E'),
+	(12, 1, 'Collections', '0000000009', '2025-11-14 03:42:47', 'A'),
+	(13, 1, 'Collections', '0000000009', '2025-11-14 03:43:07', 'E'),
+	(14, 1, 'Collections', '0000000009', '2025-11-14 03:43:14', 'E'),
+	(15, 1, 'Collections', '0000000009', '2025-11-14 03:43:30', 'D');
 
 -- Dumping structure for table university.collections
 CREATE TABLE IF NOT EXISTS `collections` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `or_number` varchar(50) NOT NULL DEFAULT '',
+  `or_number` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
   `or_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `student_id` int DEFAULT NULL,
   `semester_id` int DEFAULT NULL,
   `cash` decimal(8,2) NOT NULL DEFAULT '0.00',
   `gcash` decimal(8,2) NOT NULL DEFAULT '0.00',
-  `gcash_refno` varchar(50) NOT NULL DEFAULT '0',
+  `gcash_refno` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `or_number` (`or_number`),
   KEY `FK_collections_students` (`student_id`),
   KEY `FK_collections_semesters` (`semester_id`),
   CONSTRAINT `FK_collections_semesters` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`),
   CONSTRAINT `FK_collections_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.collections: ~0 rows (approximately)
+-- Dumping data for table university.collections: ~8 rows (approximately)
+INSERT INTO `collections` (`id`, `or_number`, `or_date`, `student_id`, `semester_id`, `cash`, `gcash`, `gcash_refno`) VALUES
+	(1, '0000000001', '2025-11-13 15:58:37', 1, 1, 1000.00, 0.00, '0'),
+	(2, '0000000002', '2025-11-13 15:58:37', 1, 1, 0.00, 200.00, '0'),
+	(3, '0000000003', '2025-11-13 15:58:37', 3, 1, 200.00, 0.00, '0'),
+	(4, '0000000004', '2025-11-13 17:55:40', 1, 1, 50.00, 0.00, ''),
+	(5, '0000000005', '2025-11-13 17:57:45', 1, 1, 10.00, 0.00, ''),
+	(7, '0000000006', '2025-11-13 18:36:23', 1, 1, 0.00, 8.00, ''),
+	(8, '0000000007', '2025-11-13 18:50:05', 1, 1, 1.00, 0.00, ''),
+	(9, '0000000008', '2025-11-13 18:51:32', 3, 2, 0.00, 200.00, '328947');
 
 -- Dumping structure for table university.courses
 CREATE TABLE IF NOT EXISTS `courses` (
@@ -127,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `student_subjects` (
   CONSTRAINT `FK_student_subjects_subjects` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.student_subjects: ~3 rows (approximately)
+-- Dumping data for table university.student_subjects: ~11 rows (approximately)
 INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`, `midterm_grade`, `final_course_grade`) VALUES
 	(4, 3, 3, 1, 2.000000, 1.750000),
 	(7, 1, 3, 1, 1.000000, 1.000000),
