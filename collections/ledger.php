@@ -82,11 +82,12 @@ $pdf->Cell(60, 10, 'Payments', 1, 1, 'C');
 $pdf->SetFont('Arial', '', 10);
 $total_paid = 0;
 foreach ($collections as $collection) {
+    $payment = floatval($collection['cash']) + floatval($collection['gcash']);
     $pdf->Cell(60, 8, $collection['or_number'], 1, 0, 'C');
     $pdf->Cell(60, 8, $collection['or_date'], 1, 0, 'C');
-    $pdf->Cell(60, 8, $collection['cash'] == 0 ? $collection['gcash'] : $collection['cash'], 1, 1, 'C');
+    $pdf->Cell(60, 8, number_format($payment, 2), 1, 1, 'C');
 
-    $total_paid += $collection['cash'] == 0 ? floatval($collection['gcash']) : floatval($collection['cash']);
+    $total_paid += $payment;
 }
 
 if (!count($collections)) {

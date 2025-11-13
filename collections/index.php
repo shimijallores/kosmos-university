@@ -59,7 +59,7 @@ $today = date('Y-m-d');
         <!-- Semester -->
         <div class="flex gap-x-4 w-full">
             <p class="text-2xl font-bold w-full">Semester
-                <select name="semester" class="border font-medium border-black rounded-sm px-2 w-3/4 sm:w-auto">
+                <select name="semester" x-model="currentSem" class="border font-medium border-black rounded-sm px-2 w-3/4 sm:w-auto">
                     <?php foreach ($semesters as $semester): ?>
                         <option value="<?= $semester['code'] ?>"
                             @click="currentSem = $el.value; fetchORNumber(studentNumber, currentSem)">
@@ -109,14 +109,20 @@ $today = date('Y-m-d');
             deleteModal: false,
             deleteId: null,
             message: [],
-            studentNumber: '',
-            studentName: '',
-            currentSem: '1st25-26',
-            fetchedStudent: [],
+            studentNumber: '<?= addslashes($_SESSION['last_collection']['student_number'] ?? '') ?>',
+            studentName: '<?= addslashes($_SESSION['last_collection']['student_name'] ?? '') ?>',
+            currentSem: '<?= addslashes($_SESSION['last_collection']['semester'] ?? '1st25-26') ?>',
+            fetchedStudent: ['<?= $_SESSION['last_collection']['new_or'] ?? '' ?>', '<?= $_SESSION['last_collection']['balance'] ?? 0 ?>'],
             collectionData: [],
             cash: '',
             gcash: '',
             gcashRef: '',
+
+            init() {
+                if (this.studentNumber) {
+                    this.fetchStudent(this.studentNumber);
+                }
+            },
 
             fetchStudent: async function(name) {
                 let response = await fetch(`api.php?name=${name}`);

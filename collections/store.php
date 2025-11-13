@@ -57,6 +57,41 @@ $stmt->execute([
   $action,
 ]);
 
+// Calculate new OR number
+$stmt = $connection->prepare("select or_number from collections order by cast(or_number as unsigned) desc");
+$stmt->execute();
+$or_number = $stmt->fetch();
+
+if (!$or_number) {
+  $new_or = '0000000001';
+} else {
+  $new_or = str_pad($or_number['or_number'] + 1, 10, '0', STR_PAD_LEFT);
+}
+
+// Fetch student name
+$stmt = $connection->prepare("select name from students where student_id = ?");
+$stmt->execute([$student_id['student_id']]);
+$student_name = $stmt->fetch()['name'];
+
+// Calculate total tuition (sum of subjects units * price_unit for student in semester)
+$stmt = $connection->prepare("SELECT SUM(sub.units * sub.price_unit) as total_tuition FROM student_subjects ss JOIN subjects sub ON ss.subject_id = sub.id JOIN students s ON ss.student_id = s.student_id JOIN semesters sem ON ss.semester_id = sem.id WHERE s.student_number = ? AND sem.code = ?");
+$stmt->execute([$_POST['student_number'], $_POST['semester']]);
+$total_tuition = $stmt->fetch()['total_tuition'] ?? 0;
+
+// Calculate total paid
+$stmt = $connection->prepare("SELECT SUM(cash + gcash) as total_paid FROM collections WHERE student_id = ? AND semester_id = (SELECT id FROM semesters WHERE code = ?)");
+$stmt->execute([$student_id['student_id'], $_POST['semester']]);
+$total_paid = $stmt->fetch()['total_paid'] ?? 0;
+
+// Store in session for next form
+$_SESSION['last_collection'] = [
+  'student_number' => $_POST['student_number'],
+  'student_name' => $student_name,
+  'semester' => $_POST['semester'],
+  'new_or' => $new_or,
+  'balance' => $total_tuition - $total_paid
+];
+
 // Return to index page
 header("Location: index.php");
 exit();
