@@ -13,6 +13,8 @@ if (empty($_SESSION['user'])) {
     <a href="grades.php"
         class="bg-blue-500 text-center hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">My
         Grades</a>
+    <a href="collections.php"
+        class="bg-blue-500 text-center hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">My Ledger</a>
     <a href="password.php"
         class="bg-blue-500  text-center hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Change
         Password</a>
