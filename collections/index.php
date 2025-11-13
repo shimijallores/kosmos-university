@@ -112,8 +112,6 @@ $today = date('Y-m-d');
                     `or_api.php?studentNumber=${studentNumber}&semester=${semester}`);
 
                 this.fetchedStudent = await response.json();
-
-                console.log(this.fetchedStudent);
             }
         }))
     })
