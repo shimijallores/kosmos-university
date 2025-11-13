@@ -23,7 +23,7 @@ $today = date('Y-m-d');
 
 <body x-data="search()" class="flex justify-content flex-col items-center">
     <!-- Search Modal -->
-    <?= require('search.php') ?>
+    <?php require('search.php') ?>
 
     <a href="/index.php"
         class="bg-blue-500 text-center mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Back</a>
@@ -51,10 +51,10 @@ $today = date('Y-m-d');
             <p class="text-2xl font-bold w-full">Semester
                 <select name="semester" class="border font-medium border-black rounded-sm px-2 w-3/4 sm:w-auto">
                     <?php foreach ($semesters as $semester): ?>
-                    <option value="<?= $semester['code'] ?>"
-                        @click="currentSem = $el.value; fetchORNumber(studentNumber, currentSem)">
-                        <?= $semester['code'] ?>
-                    </option>
+                        <option value="<?= $semester['code'] ?>"
+                            @click="currentSem = $el.value; fetchORNumber(studentNumber, currentSem)">
+                            <?= $semester['code'] ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
                 <a :href="'ledger.php?student=' + studentNumber + '&semester=' + currentSem" target="_blank"
@@ -85,28 +85,28 @@ $today = date('Y-m-d');
 </body>
 
 <script>
-document.addEventListener('alpine:init', () => {
-    Alpine.data('search', () => ({
-        searchOpen: false,
-        message: [],
-        studentNumber: '',
-        currentSem: '1st25-26',
-        fetchedStudent: null,
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('search', () => ({
+            searchOpen: false,
+            message: [],
+            studentNumber: '',
+            currentSem: '1st25-26',
+            fetchedStudent: null,
 
-        fetchStudent: async function(name) {
-            let response = await fetch(`api.php?name=${name}`);
+            fetchStudent: async function(name) {
+                let response = await fetch(`api.php?name=${name}`);
 
-            this.message = await response.json();
-        },
+                this.message = await response.json();
+            },
 
-        fetchORNumber: async function(studentNumber, semester) {
-            let response = await fetch(
-                `or_api.php?studentNumber=${studentNumber}&semester=${semester}`);
+            fetchORNumber: async function(studentNumber, semester) {
+                let response = await fetch(
+                    `or_api.php?studentNumber=${studentNumber}&semester=${semester}`);
 
-            this.fetchedStudent = await response.json();
-        }
-    }))
-})
+                this.fetchedStudent = await response.json();
+            }
+        }))
+    })
 </script>
 
 <?php
