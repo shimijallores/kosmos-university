@@ -5,8 +5,6 @@ require('../partials/database.php');
 
 session_start();
 
-dd($_POST);
-
 // Fetch student ID and semester ID 
 $stmt = $connection->prepare("select student_id from students where student_number = ?");
 $stmt->execute([$_POST['student_number']]);
@@ -31,28 +29,33 @@ if (!$existing_or) {
   $stmt = $connection->prepare("insert into collections (or_number, student_id, semester_id, cash, gcash, gcash_refno) values (?, ?, ?, ?, ?, ?)");
   $stmt->execute([
     $_POST['or_number'],
-    $student_id,
-    $semester_id,
+    $student_id['student_id'],
+    $semester_id['id'],
     $cash,
     $gcash,
     $_POST['gcash_refno'],
   ]);
 } else {
   // Update existing OR
-  $stmt = $connection->prepare("update ");
+  $stmt = $connection->prepare("update collections set cash = ?, gcash = ?, gcash_refno = ? where or_number = ?");
   $stmt->execute([
-    $_POST['or_number'],
-    $student_id,
-    $semester_id,
     $cash,
     $gcash,
     $_POST['gcash_refno'],
+    $_POST['or_number'],
   ]);
 }
 
+$action = $existing_or ? 'E' : 'A';
+
 // Add record to audit_trait
-
-
+$stmt = $connection->prepare("insert into audit_trait (user_id, module, refno, action) values (?, ?, ?, ?)");
+$stmt->execute([
+  $_SESSION['user']['id'],
+  'Collections',
+  $_POST['or_number'],
+  $action,
+]);
 
 // Return to index page
 header("Location: index.php");

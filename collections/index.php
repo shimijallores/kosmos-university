@@ -9,14 +9,9 @@ if (empty($_SESSION['user'])) {
 }
 
 // Fetch semesters
-$stmt = $connection->prepare("
-select * from semesters
-");
-
+$stmt = $connection->prepare("select * from semesters");
 $stmt->execute();
-
 $semesters = $stmt->fetchAll();
-
 
 # Current Day
 $today = date('Y-m-d');
