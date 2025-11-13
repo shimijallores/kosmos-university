@@ -32,8 +32,11 @@ $today = date('Y-m-d');
         </p>
         <!-- OR Number -->
         <p class="text-2xl font-bold ">OR #
-            <input autofocus type="text" name="or_number" :readonly="fetchedStudent[0] ? true : false"
+            <input autofocus type="text" x-ref="or_input" name="or_number" :readonly="fetchedStudent[0] ? true : false"
                 class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto" :class="fetchedStudent[0] ? 'opacity-80' : ''" :value="fetchedStudent[0]">
+            <button type="button" @click="findORNumber()" :class="studentNumber ? 'hidden' : ''"
+                class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
+                🔎</button>
         </p>
         <!-- Student Name -->
         <div class="flex gap-x-4 items-center">
@@ -45,6 +48,9 @@ $today = date('Y-m-d');
                 <button type="button" @click="searchOpen = true" x-ref="search_button"
                     class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
                     🔎</button>
+                <button type="button" @click="clearInputs()"
+                    class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
+                    Clear</button>
             </p>
         </div>
         <!-- Semester -->
@@ -66,21 +72,21 @@ $today = date('Y-m-d');
         </div>
         <!-- Payment Methods -->
         <p class="text-2xl font-bold ">Cash
-            <input type="number" name="cash" :value="fetchedStudent[1]"
+            <input type="number" name="cash" :value="cash"
                 class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto">
         </p>
         <span class="text-red-600" x-show="fetchedStudent[1]" x-text="'Remaining Balance:' + fetchedStudent[1] "></span>
         <div class="flex gap-x-4">
             <p class="text-2xl font-bold ">Gcash
-                <input type="number" name="gcash"
+                <input type="number" name="gcash" :value="gcash"
                     class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto">
             </p>
             <p class="text-2xl font-bold ">Reference #
-                <input type="number" name="gcash_refno"
+                <input type="number" name="gcash_refno" :value="gcashRef"
                     class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto">
             </p>
         </div>
-        <button type="submit" class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
+        <button type="submit" @click='alert("Collection succesfully submitted!")' class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
             Submit Collection</button>
     </form>
 
@@ -95,6 +101,10 @@ $today = date('Y-m-d');
             studentName: '',
             currentSem: '1st25-26',
             fetchedStudent: [],
+            collectionData: [],
+            cash: '',
+            gcash: '',
+            gcashRef: '',
 
             fetchStudent: async function(name) {
                 let response = await fetch(`api.php?name=${name}`);
@@ -107,6 +117,39 @@ $today = date('Y-m-d');
                     `or_api.php?studentNumber=${studentNumber}&semester=${semester}`);
 
                 this.fetchedStudent = await response.json();
+
+                this.cash = this.fetchedStudent[1];
+            },
+
+            findORNumber: async function() {
+                const orNumber = this.$refs.or_input.value;
+
+                if (!orNumber) {
+                    return;
+                }
+
+                let response = await fetch(`collection_api.php?or=${orNumber}`);
+
+                this.collectionData = await response.json();
+
+                const collection = this.collectionData[0];
+                const student = this.collectionData[1];
+                const semester = this.collectionData[2];
+
+                this.studentNumber = student.student_number;
+                this.studentName = student.name;
+                this.fetchedStudent = [collection.or_number, this.collectionData[3]];
+                this.cash = collection.cash;
+                this.gcash = collection.gcash;
+                this.gcashRef = collection.gcash_refno;
+            },
+
+            clearInputs() {
+                this.studentNumber = '';
+                this.studentName = '';
+                this.fetchedStudent = [];
+                this.message = [];
+                this.fetchStudent('');
             }
         }))
     })
