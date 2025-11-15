@@ -9,7 +9,7 @@ if (empty($_SESSION['user'])) {
 ?>
 
 <body class="flex justify-content flex-col items-center gap-y-6">
-    <h1 class="text-3xl font-bold mt-6">Menu</h1>
+    <h1 class="text-3xl font-bold mt-6">Admin Portal</h1>
     <a href="enrollment/index.php"
         class="bg-blue-500 hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded block text-center">
         Enrollment

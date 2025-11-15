@@ -17,6 +17,8 @@ require('partials/head.php');
     <a href="login.php"
         class="bg-blue-500 text-center hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Admin
         Login</a>
+    <a href="login.php"
+        class="bg-blue-500 text-center hover:bg-blue-700 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Teacher Login</a>
 </body>
 
 <?php

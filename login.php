@@ -9,6 +9,8 @@ if (isset($_SESSION['user'])) {
     header('location: index.php');
   } elseif ($_SESSION['user']['role'] === 'student') {
     header('location: student/index.php');
+  } elseif ($_SESSION['user']['role'] === 'teacher') {
+    header('location: teacher/index.php');
   } else {
     header('location: index.php');
   }
@@ -32,6 +34,8 @@ if (!empty($_POST['name'])) {
         header('location: index.php');
       } elseif ($user['role'] === 'student') {
         header('location: student/index.php');
+      } elseif ($user['role'] === 'teacher') {
+        header('location: teacher/index.php');
       }
       exit();
     }
@@ -45,45 +49,45 @@ $_SESSION['message'] = '';
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body class="flex justify-center p-20">
-    <form action="login.php" method="POST" class="">
-        <h1 class="text-2xl font-bold">Login</h1>
-        <div class="flex flex-col justify-start gap-y-2 mt-2 border border-blue-300 p-10 rounded">
-            <div>
-                <label>Username</label>
-                <input type="text" name="name" autofocus class="px-2 py-1 rounded border border-neutral-200">
-            </div>
+  <form action="login.php" method="POST" class="">
+    <h1 class="text-2xl font-bold">Login</h1>
+    <div class="flex flex-col justify-start gap-y-2 mt-2 border border-blue-300 p-10 rounded">
+      <div>
+        <label>Username</label>
+        <input type="text" name="name" autofocus class="px-2 py-1 rounded border border-neutral-200">
+      </div>
 
 
-            <div>
-                <label>Password</label>
-                <input type="password" name="password" class="px-2 py-1 rounded border border-neutral-200">
-            </div>
+      <div>
+        <label>Password</label>
+        <input type="password" name="password" class="px-2 py-1 rounded border border-neutral-200">
+      </div>
 
-            <?php if (isset($_SESSION['message'])): ?>
-            <p class="text-red-600 text-xs"><?= $_SESSION['message'] ?></p>
-            <?php $_SESSION['message'] = ""; ?>
-            <?php endif; ?>
+      <?php if (isset($_SESSION['message'])): ?>
+        <p class="text-red-600 text-xs"><?= $_SESSION['message'] ?></p>
+        <?php $_SESSION['message'] = ""; ?>
+      <?php endif; ?>
 
-            <button type="submit"
-                class="bg bg-blue-600 px-2 py-1 text-white w-full text-center rounded-md hover:opacity-80 cursor-pointer transition duration-200">Login</button>
+      <button type="submit"
+        class="bg bg-blue-600 px-2 py-1 text-white w-full text-center rounded-md hover:opacity-80 cursor-pointer transition duration-200">Login</button>
 
-            <div class="mt-4 text-center space-y-2">
+      <div class="mt-4 text-center space-y-2">
 
-                <p class="text-sm text-gray-600">
-                    <a href="menu.php" class="text-gray-600 hover:text-gray-800 font-medium">
-                        ← Back to Main Menu
-                    </a>
-                </p>
-            </div>
-        </div>
-    </form>
+        <p class="text-sm text-gray-600">
+          <a href="menu.php" class="text-gray-600 hover:text-gray-800 font-medium">
+            ← Back to Main Menu
+          </a>
+        </p>
+      </div>
+    </div>
+  </form>
 </body>
 
 </html>

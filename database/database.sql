@@ -25,9 +25,9 @@ CREATE TABLE IF NOT EXISTS `audit_trait` (
   PRIMARY KEY (`id`),
   KEY `FK_audit_trait_users` (`user_id`),
   CONSTRAINT `FK_audit_trait_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.audit_trait: ~25 rows (approximately)
+-- Dumping data for table university.audit_trait: ~29 rows (approximately)
 INSERT INTO `audit_trait` (`id`, `user_id`, `module`, `refno`, `datetime`, `action`) VALUES
 	(1, 1, 'Collections', '0000000004', '2025-11-14 01:55:40', 'A'),
 	(2, 1, 'Collections', '0000000005', '2025-11-14 01:57:45', 'A'),
@@ -57,7 +57,10 @@ INSERT INTO `audit_trait` (`id`, `user_id`, `module`, `refno`, `datetime`, `acti
 	(27, 1, 'Collections', '0000000015', '2025-11-14 04:31:02', 'A'),
 	(28, 1, 'Collections', '0000000016', '2025-11-14 04:31:40', 'A'),
 	(29, 1, 'Collections', '0000000017', '2025-11-14 04:31:51', 'A'),
-	(30, 1, 'Collections', '0000000017', '2025-11-14 04:32:28', 'E');
+	(30, 1, 'Collections', '0000000017', '2025-11-14 04:32:28', 'E'),
+	(31, 1, 'Collections', '0000000018', '2025-11-14 04:34:41', 'A'),
+	(32, 1, 'Collections', '0000000018', '2025-11-14 04:35:04', 'E'),
+	(33, 1, 'Collections', '0000000018', '2025-11-14 04:35:11', 'D');
 
 -- Dumping structure for table university.collections
 CREATE TABLE IF NOT EXISTS `collections` (
@@ -75,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `collections` (
   KEY `FK_collections_semesters` (`semester_id`),
   CONSTRAINT `FK_collections_semesters` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`),
   CONSTRAINT `FK_collections_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table university.collections: ~17 rows (approximately)
 INSERT INTO `collections` (`id`, `or_number`, `or_date`, `student_id`, `semester_id`, `cash`, `gcash`, `gcash_refno`) VALUES
@@ -175,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `student_subjects` (
   CONSTRAINT `FK_student_subjects_subjects` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.student_subjects: ~3 rows (approximately)
+-- Dumping data for table university.student_subjects: ~11 rows (approximately)
 INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`, `midterm_grade`, `final_course_grade`) VALUES
 	(4, 3, 3, 1, 2.000000, 1.750000),
 	(7, 1, 3, 1, 1.000000, 1.000000),
@@ -216,15 +219,16 @@ INSERT INTO `subjects` (`id`, `code`, `description`, `days`, `time`, `room_id`, 
 -- Dumping structure for table university.teachers
 CREATE TABLE IF NOT EXISTS `teachers` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(10) DEFAULT NULL,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.teachers: ~0 rows (approximately)
-INSERT INTO `teachers` (`id`, `name`) VALUES
-	(1, 'Dr. Alice Smith'),
-	(2, 'Prof. John Doe'),
-	(3, 'Ms. Clara Johnson');
+-- Dumping data for table university.teachers: ~3 rows (approximately)
+INSERT INTO `teachers` (`id`, `code`, `name`) VALUES
+	(1, 'AAAAAAAAAA', 'Dr. Alice Smith'),
+	(2, 'BBBBBBBBBB', 'Prof. John Doe'),
+	(3, 'CCCCCCCCCC', 'Ms. Clara Johnson');
 
 -- Dumping structure for table university.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -233,14 +237,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(250) NOT NULL,
   `role` varchar(50) NOT NULL DEFAULT 'student',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.users: ~2 rows (approximately)
+-- Dumping data for table university.users: ~7 rows (approximately)
 INSERT INTO `users` (`id`, `name`, `password`, `role`) VALUES
 	(1, 'shimi', 'shimi', 'admin'),
 	(2, 'S2025001', '123', 'student'),
 	(3, 'S2023001', '123', 'student'),
-	(4, 'S2023003', '123', 'student');
+	(4, 'S2023003', '123', 'student'),
+	(5, 'AAAAAAAAAA', '123', 'teacher'),
+	(6, 'BBBBBBBBBB', '123', 'teacher'),
+	(7, 'CCCCCCCCCC', '123', 'teacher');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
