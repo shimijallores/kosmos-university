@@ -1,20 +1,20 @@
  <div x-cloak x-show="open" x-transition.opacity.duration.200ms x-on:keydown.esc.window="open = false"
      x-on:click.self="open = false"
-     class="fixed inset-0 z-30 flex items-center justify-center bg-black/20 p-4 backdrop-blur-md sm:p-8" role="dialog"
+     class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 p-4" role="dialog"
      aria-modal="true" aria-labelledby="defaultModalTitle">
      <!-- Modal Dialog -->
      <form action="update.php" method="POST" x-show="open"
          x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
          x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100"
-         class="w-full max-w-sm mx-4 sm:max-w-lg flex flex-col gap-4 overflow-hidden rounded-sm border border-neutral-300 bg-white text-neutral-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
+         class="w-full max-w-sm mx-4 sm:max-w-lg flex flex-col gap-4 overflow-hidden border border-gray-300 bg-white text-neutral-600">
          <!-- Hidden Fields -->
          <input type="hidden" name="subject_id" :value="selectedSubjectId">
          <input type="hidden" name="student_id" value="<?= $student['student_id'] ?>">
          <input type="hidden" name="semester" value="<?= $_GET['semester'] ?>">
          <!-- Dialog Header -->
          <div
-             class="flex items-center justify-between border-b border-neutral-300 bg-neutral-50/60 p-4 dark:border-neutral-700 dark:bg-neutral-950/20">
-             <h3 id="defaultModalTitle" class="font-semibold tracking-wide text-neutral-900 dark:text-white">
+             class="flex items-center justify-between border-b border-gray-200 bg-gray-50 p-4">
+             <h3 id="defaultModalTitle" class="font-semibold tracking-wide text-gray-900">
                  <?= $student['student_name'] . ' Grades' ?></h3>
              <button x-on:click="open = false" aria-label="close modal">
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor"
@@ -27,10 +27,10 @@
          <div class="px-4 py-8 flex flex-col gap-y-4">
              <div>
                  <label for="midterm_grade"
-                     class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Midterm
+                     class="block text-sm font-medium text-gray-700 mb-2">Midterm
                      Grade:</label>
                  <select name="midterm_grade"
-                     class="border w-full border-neutral-200 px-3 py-2 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                     class="border w-full border-gray-300 px-3 py-2 focus:ring-2 focus:ring-neutral-800 focus:border-neutral-800">
                      <option value="null">Select Grade</option>
                      <option value="1.00" :selected="selectedMidtermGrade == '1.00'">1.00</option>
                      <option value="1.25" :selected="selectedMidtermGrade == '1.25'">1.25</option>
@@ -47,10 +47,10 @@
              </div>
              <div>
                  <label for="final_course_grade"
-                     class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Final Course
+                     class="block text-sm font-medium text-gray-700 mb-2">Final Course
                      Grade:</label>
                  <select name="final_course_grade"
-                     class="border w-full border-neutral-200 px-3 py-2 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                     class="border w-full border-gray-300 px-3 py-2 focus:ring-2 focus:ring-neutral-800 focus:border-neutral-800">
                      <option value="null">Select Grade</option>
                      <option value="1.00" :selected="selectedFinalGrade == '1.00'">1.00</option>
                      <option value="1.25" :selected="selectedFinalGrade == '1.25'">1.25</option>
@@ -68,11 +68,11 @@
          </div>
          <!-- Dialog Footer -->
          <div
-             class="flex flex-col-reverse justify-between gap-2 border-t border-neutral-300 bg-neutral-50/60 p-4 dark:border-neutral-700 dark:bg-neutral-950/20 sm:flex-row sm:items-center md:justify-end">
+             class="flex flex-col-reverse justify-between gap-2 border-t border-gray-200 bg-gray-50 p-4 sm:flex-row sm:items-center md:justify-end">
              <button x-on:click="open = false" type="button"
-                 class="whitespace-nowrap rounded-sm px-4 py-2 text-center text-sm font-medium tracking-wide text-neutral-600 transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:opacity-100 active:outline-offset-0 dark:text-neutral-300 dark:focus-visible:outline-white">Cancel</button>
+                 class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-300 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-neutral-800 focus:border-neutral-800">Cancel</button>
              <button type="submit"
-                 class="whitespace-nowrap rounded-sm bg-neutral-800 px-4 py-2 text-center text-sm font-medium tracking-wide text-white transition hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:opacity-100 active:outline-offset-0">Update
+                 class="px-4 py-2 text-sm font-medium text-white bg-neutral-800 hover:bg-neutral-900 focus:ring-2 focus:ring-neutral-800">Update
                  Grades</button>
          </div>
      </form>
