@@ -37,6 +37,17 @@ Conventions worth preserving
 - Student number format: `S{year}{3-digit sequential}` (e.g., `S2025001`) — modify only where enrollment logic lives.
 - GPA calculation: use only subjects with `final_course_grade > 0`; formula: sum(final_grade \* units) / total_units.
 
+UI/UX design system
+
+- **Color scheme**: Use `neutral-800` as the primary color for buttons, focus rings, and accents. Avoid bright colors (blue, red, green) unless semantically required.
+- **Design style**: Flat, minimalistic design inspired by shadcn/ui. NO shadows (`shadow-*` classes) — use subtle borders instead (`border-gray-300`).
+- **Buttons**: Prefer outline/bordered buttons (`border border-gray-300 bg-white hover:bg-gray-50`) over solid colored buttons. Use `bg-neutral-800 hover:bg-neutral-900` for primary actions.
+- **Focus states**: Use `focus:ring-neutral-800 focus:border-neutral-800` consistently.
+- **Backgrounds**: Use `bg-gray-50` for page backgrounds, `bg-white` for cards/containers.
+- **Typography**: Use proper font weights (`font-medium`, `font-extrabold`) and gray text colors (`text-gray-600`, `text-gray-900`).
+- **Spacing**: Generous padding and spacing (`space-y-*`, `py-8 px-6`) for breathing room.
+- Keep it minimalistic yet pretty — clean lines, subtle interactions, no visual clutter.
+
 Integration & APIs
 
 - Minimal internal APIs live in module folders (`subjects/api.php`, `grades/api.php`, `collections/or_api.php`) — they expect POST and return HTML/JSON.
@@ -56,6 +67,7 @@ When unsure, ask the human: share the specific file and the DB table you plan to
 Files to reference quickly
 
 - `partials/database.php`, `functions.php`, `menu.php`, `enrollment/store.php`, `collections/store.php`, `grades/print.php`, `database/database.sql`.
+- For UI reference: `auth/student_login.php`, `auth/admin_login.php`, `auth/teacher_login.php`, `menu.php` (flat, minimalistic design examples).
 
 End of instructions.
 ```
