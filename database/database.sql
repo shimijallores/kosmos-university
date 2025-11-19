@@ -14,7 +14,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping structure for table university.audit_trait
+-- Dumping structure for table myuni.audit_trait
 CREATE TABLE IF NOT EXISTS `audit_trait` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `audit_trait` (
   CONSTRAINT `FK_audit_trait_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.audit_trait: ~29 rows (approximately)
+-- Dumping data for table myuni.audit_trait: ~29 rows (approximately)
 INSERT INTO `audit_trait` (`id`, `user_id`, `module`, `refno`, `datetime`, `action`) VALUES
 	(1, 1, 'Collections', '0000000004', '2025-11-14 01:55:40', 'A'),
 	(2, 1, 'Collections', '0000000005', '2025-11-14 01:57:45', 'A'),
@@ -62,7 +62,7 @@ INSERT INTO `audit_trait` (`id`, `user_id`, `module`, `refno`, `datetime`, `acti
 	(32, 1, 'Collections', '0000000018', '2025-11-14 04:35:04', 'E'),
 	(33, 1, 'Collections', '0000000018', '2025-11-14 04:35:11', 'D');
 
--- Dumping structure for table university.collections
+-- Dumping structure for table myuni.collections
 CREATE TABLE IF NOT EXISTS `collections` (
   `id` int NOT NULL AUTO_INCREMENT,
   `or_number` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `collections` (
   CONSTRAINT `FK_collections_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.collections: ~17 rows (approximately)
+-- Dumping data for table myuni.collections: ~17 rows (approximately)
 INSERT INTO `collections` (`id`, `or_number`, `or_date`, `student_id`, `semester_id`, `cash`, `gcash`, `gcash_refno`) VALUES
 	(1, '0000000001', '2025-11-13 15:58:37', 1, 1, 1000.00, 0.00, '0'),
 	(2, '0000000002', '2025-11-13 15:58:37', 1, 1, 0.00, 200.00, '0'),
@@ -100,7 +100,7 @@ INSERT INTO `collections` (`id`, `or_number`, `or_date`, `student_id`, `semester
 	(19, '0000000016', '2025-11-13 20:31:40', 3, 1, 10.00, 10.00, ''),
 	(20, '0000000017', '2025-11-13 20:31:51', 3, 2, 5.00, 10.00, '');
 
--- Dumping structure for table university.courses
+-- Dumping structure for table myuni.courses
 CREATE TABLE IF NOT EXISTS `courses` (
   `course_id` int NOT NULL AUTO_INCREMENT,
   `code` varchar(50) DEFAULT NULL,
@@ -108,26 +108,26 @@ CREATE TABLE IF NOT EXISTS `courses` (
   PRIMARY KEY (`course_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.courses: ~3 rows (approximately)
+-- Dumping data for table myuni.courses: ~3 rows (approximately)
 INSERT INTO `courses` (`course_id`, `code`, `name`) VALUES
 	(1, 'CS101', 'Computer Science'),
 	(2, 'IT201', 'Information Technology'),
 	(3, 'ENG301', 'English Literature');
 
--- Dumping structure for table university.rooms
+-- Dumping structure for table myuni.rooms
 CREATE TABLE IF NOT EXISTS `rooms` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.rooms: ~3 rows (approximately)
+-- Dumping data for table myuni.rooms: ~3 rows (approximately)
 INSERT INTO `rooms` (`id`, `name`) VALUES
 	(1, 'Room A'),
 	(2, 'Room B'),
 	(3, 'Lab 1');
 
--- Dumping structure for table university.semesters
+-- Dumping structure for table myuni.semesters
 CREATE TABLE IF NOT EXISTS `semesters` (
   `id` int NOT NULL AUTO_INCREMENT,
   `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -138,12 +138,12 @@ CREATE TABLE IF NOT EXISTS `semesters` (
   UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.semesters: ~2 rows (approximately)
+-- Dumping data for table myuni.semesters: ~2 rows (approximately)
 INSERT INTO `semesters` (`id`, `code`, `start_date`, `end_date`, `summer`) VALUES
 	(1, '1st25-26', 'August 7, 2025', 'December 7, 2025', 'N'),
 	(2, '2nd25-26', 'January 7, 20255', 'May 7, 2025', 'N');
 
--- Dumping structure for table university.students
+-- Dumping structure for table myuni.students
 CREATE TABLE IF NOT EXISTS `students` (
   `student_id` int NOT NULL AUTO_INCREMENT,
   `student_number` varchar(50) NOT NULL DEFAULT '0',
@@ -155,13 +155,13 @@ CREATE TABLE IF NOT EXISTS `students` (
   CONSTRAINT `FK_students_courses` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.students: ~3 rows (approximately)
+-- Dumping data for table myuni.students: ~3 rows (approximately)
 INSERT INTO `students` (`student_id`, `student_number`, `name`, `gender`, `course_id`) VALUES
 	(1, 'S2023001', 'Michael Brown', 'Male', 1),
 	(3, 'S2023003', 'Daniel Wilson', 'Male', 1),
 	(6, 'S2025001', 'Emma Davis', 'M', 3);
 
--- Dumping structure for table university.student_subjects
+-- Dumping structure for table myuni.student_subjects
 CREATE TABLE IF NOT EXISTS `student_subjects` (
   `id` int NOT NULL AUTO_INCREMENT,
   `subject_id` int DEFAULT NULL,
@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `student_subjects` (
   CONSTRAINT `FK_student_subjects_subjects` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.student_subjects: ~11 rows (approximately)
+-- Dumping data for table myuni.student_subjects: ~11 rows (approximately)
 INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`, `midterm_grade`, `final_course_grade`) VALUES
 	(4, 3, 3, 1, 2.000000, 1.750000),
 	(7, 1, 3, 1, 1.000000, 1.000000),
@@ -192,7 +192,7 @@ INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`,
 	(25, 1, 6, 2, NULL, NULL),
 	(26, 2, 6, 2, NULL, NULL);
 
--- Dumping structure for table university.subjects
+-- Dumping structure for table myuni.subjects
 CREATE TABLE IF NOT EXISTS `subjects` (
   `id` int NOT NULL AUTO_INCREMENT,
   `code` varchar(50) DEFAULT NULL,
@@ -210,13 +210,13 @@ CREATE TABLE IF NOT EXISTS `subjects` (
   CONSTRAINT `FK_subjects_teachers` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.subjects: ~3 rows (approximately)
+-- Dumping data for table myuni.subjects: ~3 rows (approximately)
 INSERT INTO `subjects` (`id`, `code`, `description`, `days`, `time`, `room_id`, `teacher_id`, `price_unit`, `units`) VALUES
 	(1, 'MATH101', 'Calculus 1', 'Mon/Wed/Fri', '09:00-10:30', 1, 1, 500, 3),
 	(2, 'CS201', 'Data Structures', 'Tue/Thu', '11:00-12:30', 3, 2, 700, 4),
 	(3, 'ENG150', 'Intro to Poetry', 'Mon/Wed', '14:00-15:30', 2, 3, 400, 2);
 
--- Dumping structure for table university.teachers
+-- Dumping structure for table myuni.teachers
 CREATE TABLE IF NOT EXISTS `teachers` (
   `id` int NOT NULL AUTO_INCREMENT,
   `code` varchar(10) DEFAULT NULL,
@@ -224,13 +224,13 @@ CREATE TABLE IF NOT EXISTS `teachers` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.teachers: ~3 rows (approximately)
+-- Dumping data for table myuni.teachers: ~3 rows (approximately)
 INSERT INTO `teachers` (`id`, `code`, `name`) VALUES
 	(1, 'AAAAAAAAAA', 'Dr. Alice Smith'),
 	(2, 'BBBBBBBBBB', 'Prof. John Doe'),
 	(3, 'CCCCCCCCCC', 'Ms. Clara Johnson');
 
--- Dumping structure for table university.users
+-- Dumping structure for table myuni.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(250) NOT NULL,
@@ -239,7 +239,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table university.users: ~7 rows (approximately)
+-- Dumping data for table myuni.users: ~7 rows (approximately)
 INSERT INTO `users` (`id`, `name`, `password`, `role`) VALUES
 	(1, 'shimi', 'shimi', 'admin'),
 	(2, 'S2025001', '123', 'student'),
