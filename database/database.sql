@@ -25,9 +25,9 @@ CREATE TABLE IF NOT EXISTS `audit_trait` (
   PRIMARY KEY (`id`),
   KEY `FK_audit_trait_users` (`user_id`),
   CONSTRAINT `FK_audit_trait_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table myuni.audit_trait: ~32 rows (approximately)
+-- Dumping data for table myuni.audit_trait: ~35 rows (approximately)
 INSERT INTO `audit_trait` (`id`, `user_id`, `module`, `refno`, `datetime`, `action`) VALUES
 	(1, 1, 'Collections', '0000000004', '2025-11-14 01:55:40', 'A'),
 	(2, 1, 'Collections', '0000000005', '2025-11-14 01:57:45', 'A'),
@@ -60,7 +60,17 @@ INSERT INTO `audit_trait` (`id`, `user_id`, `module`, `refno`, `datetime`, `acti
 	(30, 1, 'Collections', '0000000017', '2025-11-14 04:32:28', 'E'),
 	(31, 1, 'Collections', '0000000018', '2025-11-14 04:34:41', 'A'),
 	(32, 1, 'Collections', '0000000018', '2025-11-14 04:35:04', 'E'),
-	(33, 1, 'Collections', '0000000018', '2025-11-14 04:35:11', 'D');
+	(33, 1, 'Collections', '0000000018', '2025-11-14 04:35:11', 'D'),
+	(34, 1, 'Collections', '', '2025-11-19 19:45:34', 'A'),
+	(35, 1, 'Collections', '0000000018', '2025-11-19 19:45:40', 'A'),
+	(36, 1, 'Collections', '0000000019', '2025-11-19 19:46:14', 'A'),
+	(37, 1, 'Collections', '0000000020', '2025-11-19 19:49:30', 'A'),
+	(38, 1, 'Collections', '0000000014', '2025-11-19 19:49:57', 'E'),
+	(39, 1, 'Collections', '0000000014', '2025-11-19 19:50:08', 'E'),
+	(40, 1, 'Collections', '0000000021', '2025-11-19 19:50:38', 'A'),
+	(41, 1, 'Collections', '0000000022', '2025-11-19 19:50:43', 'A'),
+	(42, 1, 'Collections', '0000000023', '2025-11-19 19:50:58', 'A'),
+	(43, 1, 'Collections', '0000000003', '2025-11-19 19:51:58', 'E');
 
 -- Dumping structure for table myuni.collections
 CREATE TABLE IF NOT EXISTS `collections` (
@@ -78,13 +88,13 @@ CREATE TABLE IF NOT EXISTS `collections` (
   KEY `FK_collections_semesters` (`semester_id`),
   CONSTRAINT `FK_collections_semesters` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`),
   CONSTRAINT `FK_collections_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table myuni.collections: ~17 rows (approximately)
+-- Dumping data for table myuni.collections: ~20 rows (approximately)
 INSERT INTO `collections` (`id`, `or_number`, `or_date`, `student_id`, `semester_id`, `cash`, `gcash`, `gcash_refno`) VALUES
 	(1, '0000000001', '2025-11-13 15:58:37', 1, 1, 1000.00, 0.00, '0'),
 	(2, '0000000002', '2025-11-13 15:58:37', 1, 1, 0.00, 200.00, '0'),
-	(3, '0000000003', '2025-11-13 15:58:37', 3, 1, 200.00, 0.00, '0'),
+	(3, '0000000003', '2025-11-13 15:58:37', 3, 1, 200.00, 0.00, ''),
 	(4, '0000000004', '2025-11-13 17:55:40', 1, 1, 50.00, 0.00, ''),
 	(5, '0000000005', '2025-11-13 17:57:45', 1, 1, 10.00, 0.00, ''),
 	(7, '0000000006', '2025-11-13 18:36:23', 1, 1, 0.00, 8.00, ''),
@@ -95,10 +105,17 @@ INSERT INTO `collections` (`id`, `or_number`, `or_date`, `student_id`, `semester
 	(13, '0000000011', '2025-11-13 20:17:25', 1, 2, 2.00, 0.00, ''),
 	(14, '0000000012', '2025-11-13 20:20:09', 1, 2, 3.00, 0.00, ''),
 	(15, '0000000013', '2025-11-13 20:27:08', 1, 1, 10.00, 10.00, ''),
-	(16, '0000000014', '2025-11-13 20:29:20', 1, 1, 5.00, 5.00, ''),
+	(16, '0000000014', '2025-11-13 20:29:20', 1, 1, 6.00, 5.00, ''),
 	(18, '0000000015', '2025-11-13 20:31:02', 1, 1, 5.00, 0.00, ''),
 	(19, '0000000016', '2025-11-13 20:31:40', 3, 1, 10.00, 10.00, ''),
-	(20, '0000000017', '2025-11-13 20:31:51', 3, 2, 5.00, 10.00, '');
+	(20, '0000000017', '2025-11-13 20:31:51', 3, 2, 5.00, 10.00, ''),
+	(22, '', '2025-11-19 11:45:34', NULL, 1, 0.00, 0.00, ''),
+	(23, '0000000018', '2025-11-19 11:45:40', 1, 1, 5.00, 0.00, ''),
+	(24, '0000000019', '2025-11-19 11:46:14', 8, 1, 300.00, 0.00, ''),
+	(25, '0000000020', '2025-11-19 11:49:30', 7, 1, 500.00, 0.00, ''),
+	(26, '0000000021', '2025-11-19 11:50:38', 3, 2, 5.00, 0.00, ''),
+	(27, '0000000022', '2025-11-19 11:50:43', 6, 2, 5.00, 0.00, ''),
+	(28, '0000000023', '2025-11-19 11:50:58', 6, 1, 0.00, 5.00, '89as7d89asd');
 
 -- Dumping structure for table myuni.courses
 CREATE TABLE IF NOT EXISTS `courses` (
@@ -153,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `students` (
   PRIMARY KEY (`student_id`),
   KEY `FK_students_courses` (`course_id`),
   CONSTRAINT `FK_students_courses` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table myuni.students: ~5 rows (approximately)
 INSERT INTO `students` (`student_id`, `student_number`, `name`, `gender`, `course_id`) VALUES
@@ -178,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `student_subjects` (
   CONSTRAINT `FK_student_subjects_semesters` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_student_subjects_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_student_subjects_subjects` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table myuni.student_subjects: ~11 rows (approximately)
 INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`, `midterm_grade`, `final_course_grade`) VALUES
@@ -192,7 +209,10 @@ INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`,
 	(23, 1, 6, 1, 2.250000, 2.250000),
 	(24, 2, 6, 1, 2.000000, 1.000000),
 	(25, 1, 6, 2, NULL, NULL),
-	(26, 2, 6, 2, NULL, NULL);
+	(26, 2, 6, 2, NULL, NULL),
+	(27, 1, 8, 1, NULL, NULL),
+	(28, 2, 8, 1, NULL, NULL),
+	(29, 1, 7, 1, NULL, NULL);
 
 -- Dumping structure for table myuni.subjects
 CREATE TABLE IF NOT EXISTS `subjects` (
@@ -212,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `subjects` (
   CONSTRAINT `FK_subjects_teachers` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table myuni.subjects: ~3 rows (approximately)
+-- Dumping data for table myuni.subjects: ~0 rows (approximately)
 INSERT INTO `subjects` (`id`, `code`, `description`, `days`, `time`, `room_id`, `teacher_id`, `price_unit`, `units`) VALUES
 	(1, 'MATH101', 'Calculus 1', 'Mon/Wed/Fri', '09:00-10:30', 1, 1, 500, 3),
 	(2, 'CS201', 'Data Structures', 'Tue/Thu', '11:00-12:30', 3, 2, 700, 4),
@@ -239,7 +259,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(250) NOT NULL,
   `role` varchar(50) NOT NULL DEFAULT 'student',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table myuni.users: ~9 rows (approximately)
 INSERT INTO `users` (`id`, `name`, `password`, `role`) VALUES
