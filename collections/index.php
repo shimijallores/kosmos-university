@@ -17,87 +17,148 @@ $semesters = $stmt->fetchAll();
 $today = date('Y-m-d');
 ?>
 
-<body x-data="search()" class="flex justify-content flex-col items-center">
+<body x-data="Object.assign({ sidebarOpen: false }, search())" class="bg-gray-50">
+    <!-- Admin Sidebar -->
+    <?php require('../partials/admin_sidebar.php') ?>
+
     <!-- Search Modal -->
     <?php require('search.php') ?>
 
     <!-- Delete Modal -->
     <?php require('delete.php') ?>
 
-    <a href="/index.php"
-        class="bg-blue-500 text-center mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Back</a>
-    <form method="POST" action="store.php"
-        class="w-full md:max-w-3/4 mx-auto gap-y-4 mt-6 px-4 flex flex-col gap-2 items-start sm:items-left">
-        <p class="font-bold self-end">Current User: <?= ucfirst($_SESSION['user']['name'] ?? 'N/A') ?></p>
-        <p class="text-2xl font-bold w-full">Date
-            <input type="date" name="date" value="<?= $today; ?>"
-                class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto">
-        </p>
-        <!-- OR Number -->
-        <p class="text-2xl font-bold ">OR #
-            <input autofocus type="text" x-ref="or_input" name="or_number" :readonly="fetchedStudent[0] ? true : false"
-                class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto" :class="fetchedStudent[0] ? 'opacity-80' : ''" :value="fetchedStudent[0]">
-            <button type="button" @click="findORNumber()" :class="studentNumber ? 'hidden' : ''"
-                class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
-                🔎</button>
-        </p>
-        <!-- Student Name -->
-        <div class="flex gap-x-4 items-center">
-            <p class="text-2xl font-bold ">Student
-                <input type="hidden" name="student_number"
-                    class="border font-medium border-black rounded-sm px-2 w-3/4 sm:w-auto" :value="studentNumber">
-                <input type="text" name="student_name" readonly
-                    class="border font-medium border-black rounded-sm px-2 w-3/4 sm:w-auto" :value="studentName">
-                <button type="button" @click="searchOpen = true" x-ref="search_button"
-                    class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
-                    🔎</button>
-                <button type="button" @click="clearInputs()"
-                    class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
-                    Clear</button>
-            </p>
-        </div>
-        <!-- Semester -->
-        <div class="flex gap-x-4 w-full">
-            <p class="text-2xl font-bold w-full">Semester
-                <select name="semester" x-model="currentSem" class="border font-medium border-black rounded-sm px-2 w-3/4 sm:w-auto">
-                    <?php foreach ($semesters as $semester): ?>
-                        <option value="<?= $semester['code'] ?>"
-                            @click="currentSem = $el.value; fetchORNumber(studentNumber, currentSem)">
-                            <?= $semester['code'] ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <a :href="'ledger.php?student=' + studentNumber + '&semester=' + currentSem" target="_blank"
-                    :class="studentNumber.length < 1 ? 'hidden' : ''"
-                    class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">Ledger
-                </a>
-            </p>
-        </div>
-        <!-- Payment Methods -->
-        <p class="text-2xl font-bold ">Cash
-            <input type="number" name="cash" :value="cash"
-                class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto">
-        </p>
-        <span class="text-red-600" x-show="fetchedStudent[1]" x-text="'Remaining Balance:' + fetchedStudent[1] "></span>
-        <div class="flex gap-x-4">
-            <p class="text-2xl font-bold ">Gcash
-                <input type="number" name="gcash" :value="gcash"
-                    class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto">
-            </p>
-            <p class="text-2xl font-bold ">Reference #
-                <input type="text" name="gcash_refno" :value="gcashRef"
-                    class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto">
-            </p>
-        </div>
-        <!-- Buttons -->
-        <div class="flex gap-4">
-            <button type="button" x-show="deleteOpen" @click="deleteModal = true; deleteId = fetchedStudent[0]" class="bg-red-500 hover:bg-red-700 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
-                Delete Collection</button>
-            <button type="submit" @click='alert("Collection succesfully submitted!")' class="bg-neutral-900 hover:bg-black cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">
-                Submit Collection</button>
-        </div>
+    <!-- Main Content -->
+    <div class="flex-1 lg:ml-64">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                    <h1 class="text-2xl font-extrabold text-gray-900">Collections Management</h1>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <span class="font-medium">Current User:</span> <?= ucfirst($_SESSION['user']['name'] ?? 'N/A') ?>
+                </div>
+            </div>
+        </header>
 
-    </form>
+        <!-- Content -->
+        <div class="p-6">
+            <div class="max-w-4xl mx-auto">
+                <!-- Collection Form Card -->
+                <div class="bg-white border border-gray-200 p-6">
+                    <form method="POST" action="store.php" class="space-y-6">
+                        <!-- Date & OR Number Section -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Date -->
+                            <div>
+                                <label for="date" class="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                                <input type="date" name="date" id="date" value="<?= $today; ?>"
+                                    class="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-neutral-800 focus:border-neutral-800">
+                            </div>
+
+                            <!-- OR Number -->
+                            <div>
+                                <label for="or_number" class="block text-sm font-medium text-gray-700 mb-2">OR Number</label>
+                                <div class="flex gap-2">
+                                    <input autofocus type="text" x-ref="or_input" name="or_number" id="or_number"
+                                        :readonly="fetchedStudent[0] ? true : false"
+                                        class="flex-1 px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-neutral-800 focus:border-neutral-800"
+                                        :class="fetchedStudent[0] ? 'bg-gray-50' : ''" :value="fetchedStudent[0]">
+                                    <button type="button" @click="findORNumber()" :class="studentNumber ? 'hidden' : ''"
+                                        class="px-4 py-2 text-sm font-medium text-white bg-neutral-800 hover:bg-neutral-900 focus:ring-2 focus:ring-neutral-800">
+                                        Search</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Student Section -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Student</label>
+                            <div class="flex gap-2">
+                                <input type="hidden" name="student_number" :value="studentNumber">
+                                <input type="text" name="student_name" readonly
+                                    class="flex-1 px-3 py-2 border border-gray-300 bg-gray-50"
+                                    :value="studentName" placeholder="Search for a student...">
+                                <button type="button" @click="searchOpen = true" x-ref="search_button"
+                                    class="px-4 py-2 text-sm font-medium text-white bg-neutral-800 hover:bg-neutral-900 focus:ring-2 focus:ring-neutral-800">
+                                    Search</button>
+                                <button type="button" @click="clearInputs()"
+                                    class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-300 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-neutral-800 focus:border-neutral-800">
+                                    Clear</button>
+                            </div>
+                        </div>
+
+                        <!-- Semester & Ledger -->
+                        <div>
+                            <label for="semester" class="block text-sm font-medium text-gray-700 mb-2">Semester</label>
+                            <div class="flex gap-2">
+                                <select name="semester" id="semester" x-model="currentSem"
+                                    class="flex-1 px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-neutral-800 focus:border-neutral-800">
+                                    <?php foreach ($semesters as $semester): ?>
+                                        <option value="<?= $semester['code'] ?>"
+                                            @click="currentSem = $el.value; fetchORNumber(studentNumber, currentSem)">
+                                            <?= $semester['code'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <a :href="'ledger.php?student=' + studentNumber + '&semester=' + currentSem" target="_blank"
+                                    :class="studentNumber.length < 1 ? 'hidden' : ''"
+                                    class="px-4 py-2 text-sm font-medium text-white bg-neutral-800 hover:bg-neutral-900 focus:ring-2 focus:ring-neutral-800">
+                                    View Ledger
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Balance Alert -->
+                        <div x-show="fetchedStudent[1]" class="p-4 border border-red-200 bg-red-50">
+                            <p class="text-sm font-medium text-red-800">
+                                Remaining Balance: ₱<span x-text="fetchedStudent[1]"></span>
+                            </p>
+                        </div>
+
+                        <!-- Payment Methods -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Cash -->
+                            <div>
+                                <label for="cash" class="block text-sm font-medium text-gray-700 mb-2">Cash Amount</label>
+                                <input type="number" name="cash" id="cash" :value="cash" step="0.01"
+                                    class="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-neutral-800 focus:border-neutral-800">
+                            </div>
+
+                            <!-- GCash -->
+                            <div>
+                                <label for="gcash" class="block text-sm font-medium text-gray-700 mb-2">GCash Amount</label>
+                                <input type="number" name="gcash" id="gcash" :value="gcash" step="0.01"
+                                    class="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-neutral-800 focus:border-neutral-800">
+                            </div>
+                        </div>
+
+                        <!-- GCash Reference -->
+                        <div>
+                            <label for="gcash_refno" class="block text-sm font-medium text-gray-700 mb-2">GCash Reference Number</label>
+                            <input type="text" name="gcash_refno" id="gcash_refno" :value="gcashRef"
+                                class="w-full px-3 py-2 border border-gray-300 focus:ring-2 focus:ring-neutral-800 focus:border-neutral-800">
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-4 pt-4 border-t border-gray-200">
+                            <button type="button" x-show="deleteOpen" @click="deleteModal = true; deleteId = fetchedStudent[0]"
+                                class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:ring-2 focus:ring-red-600">
+                                Delete Collection</button>
+                            <button type="submit" @click='alert("Collection successfully submitted!")'
+                                class="px-4 py-2 text-sm font-medium text-white bg-neutral-800 hover:bg-neutral-900 focus:ring-2 focus:ring-neutral-800">
+                                Submit Collection</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 
