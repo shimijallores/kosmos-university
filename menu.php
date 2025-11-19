@@ -2,6 +2,24 @@
 require('functions.php');
 require('partials/head.php');
 
+// Redirect logged-in users to their respective portals
+if (!empty($_SESSION['user'])) {
+    $role = $_SESSION['user']['role'] ?? '';
+
+    if ($role === 'student') {
+        header('location: /student/index.php');
+        exit();
+    } elseif ($role === 'teacher') {
+        header('location: /teacher/index.php');
+        exit();
+    } elseif ($role === 'admin') {
+        header('location: /index.php');
+        exit();
+    }
+
+    session_destroy();
+}
+
 ?>
 
 <body class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
