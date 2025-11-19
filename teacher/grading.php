@@ -335,30 +335,25 @@ if ($selected_semester && $selected_subject && $selected_term) {
             pasteMode: null,
             previewGrades: [],
 
-            pasteGrades(mode) {
+            async pasteGrades(mode) {
                 this.pasteMode = mode;
 
-                // Create temporary textarea for paste
-                const textarea = document.createElement('textarea');
-                textarea.style.position = 'fixed';
-                textarea.style.opacity = '0';
-                document.body.appendChild(textarea);
-                textarea.focus();
-
-                // Listen for paste event
-                const pasteHandler = (e) => {
-                    e.preventDefault();
-                    const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                try {
+                    // Read text from clipboard
+                    const pastedText = await navigator.clipboard.readText();
                     const grades = pastedText.split(/\r?\n/).map(g => g.trim()).filter(g => g);
+
+                    if (grades.length === 0) {
+                        alert('No data found in clipboard. Please copy grades from Excel first.');
+                        return;
+                    }
 
                     // Show preview in modal
                     this.previewGrades = grades;
-
-                    document.body.removeChild(textarea);
-                    textarea.removeEventListener('paste', pasteHandler);
-                };
-
-                textarea.addEventListener('paste', pasteHandler);
+                } catch (err) {
+                    console.error('Failed to read clipboard:', err);
+                    alert('Failed to read clipboard. Please make sure you have copied data and granted clipboard permissions.');
+                }
             },
 
             fillGrades() {

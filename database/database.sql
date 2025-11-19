@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `audit_trait` (
   CONSTRAINT `FK_audit_trait_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table myuni.audit_trait: ~35 rows (approximately)
+-- Dumping data for table myuni.audit_trait: ~42 rows (approximately)
 INSERT INTO `audit_trait` (`id`, `user_id`, `module`, `refno`, `datetime`, `action`) VALUES
 	(1, 1, 'Collections', '0000000004', '2025-11-14 01:55:40', 'A'),
 	(2, 1, 'Collections', '0000000005', '2025-11-14 01:57:45', 'A'),
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `collections` (
   CONSTRAINT `FK_collections_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table myuni.collections: ~20 rows (approximately)
+-- Dumping data for table myuni.collections: ~24 rows (approximately)
 INSERT INTO `collections` (`id`, `or_number`, `or_date`, `student_id`, `semester_id`, `cash`, `gcash`, `gcash_refno`) VALUES
 	(1, '0000000001', '2025-11-13 15:58:37', 1, 1, 1000.00, 0.00, '0'),
 	(2, '0000000002', '2025-11-13 15:58:37', 1, 1, 0.00, 200.00, '0'),
@@ -175,8 +175,8 @@ CREATE TABLE IF NOT EXISTS `students` (
 -- Dumping data for table myuni.students: ~5 rows (approximately)
 INSERT INTO `students` (`student_id`, `student_number`, `name`, `gender`, `course_id`) VALUES
 	(1, 'S2023001', 'Michael Brown', 'M', 1),
-	(3, 'S2023003', 'Daniel Wilson', 'F', 1),
-	(6, 'S2025001', 'Emma Davis', 'M', 3),
+	(3, 'S2023003', 'Daniel Wilson', 'M', 1),
+	(6, 'S2025001', 'Emma Davis', 'F', 3),
 	(7, 'S2025002', 'Shimi Uzziel Jallores', 'M', 1),
 	(8, 'S2025003', 'Estephanie Anne M. De Torres', 'F', 1);
 
@@ -197,22 +197,22 @@ CREATE TABLE IF NOT EXISTS `student_subjects` (
   CONSTRAINT `FK_student_subjects_subjects` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table myuni.student_subjects: ~11 rows (approximately)
+-- Dumping data for table myuni.student_subjects: ~14 rows (approximately)
 INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`, `midterm_grade`, `final_course_grade`) VALUES
 	(4, 3, 3, 1, 2.000000, 1.750000),
-	(7, 1, 3, 1, 1.000000, 1.000000),
-	(8, 1, 3, 2, 1.000000, NULL),
-	(12, 1, 1, 1, NULL, 1.000000),
+	(7, 1, 3, 1, 1.000000, 5.000000),
+	(8, 1, 3, 2, 1.500000, NULL),
+	(12, 1, 1, 1, 4.000000, 1.000000),
 	(19, 2, 3, 2, NULL, NULL),
 	(21, 2, 1, 2, NULL, NULL),
 	(22, 3, 1, 2, NULL, 1.750000),
-	(23, 1, 6, 1, 2.250000, 2.250000),
-	(24, 2, 6, 1, 2.000000, 1.000000),
+	(23, 1, 6, 1, 3.000000, 5.000000),
+	(24, 2, 6, 1, 5.000000, 1.000000),
 	(25, 1, 6, 2, NULL, NULL),
 	(26, 2, 6, 2, NULL, NULL),
-	(27, 1, 8, 1, NULL, NULL),
-	(28, 2, 8, 1, NULL, NULL),
-	(29, 1, 7, 1, NULL, NULL);
+	(27, 1, 8, 1, 2.000000, 4.000000),
+	(28, 2, 8, 1, 4.000000, NULL),
+	(29, 1, 7, 1, 4.000000, 3.000000);
 
 -- Dumping structure for table myuni.subjects
 CREATE TABLE IF NOT EXISTS `subjects` (
@@ -232,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `subjects` (
   CONSTRAINT `FK_subjects_teachers` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table myuni.subjects: ~0 rows (approximately)
+-- Dumping data for table myuni.subjects: ~3 rows (approximately)
 INSERT INTO `subjects` (`id`, `code`, `description`, `days`, `time`, `room_id`, `teacher_id`, `price_unit`, `units`) VALUES
 	(1, 'MATH101', 'Calculus 1', 'Mon/Wed/Fri', '09:00-10:30', 1, 1, 500, 3),
 	(2, 'CS201', 'Data Structures', 'Tue/Thu', '11:00-12:30', 3, 2, 700, 4),
