@@ -42,5 +42,24 @@ foreach ($payments as $payment) {
     $total_tuition -= floatval($payment['gcash']);
 }
 
+# Fetch all student collections for history display
+$stmt = $connection->prepare("
+    SELECT 
+        c.or_number,
+        c.or_date,
+        s.code as semester,
+        c.cash,
+        c.gcash,
+        c.gcash_refno,
+        (c.cash + c.gcash) as total
+    FROM collections c
+    LEFT JOIN semesters s ON c.semester_id = s.id
+    WHERE c.student_id = (SELECT student_id FROM students WHERE student_number = ?)
+    ORDER BY c.or_date DESC
+");
+
+$stmt->execute([$_GET['studentNumber']]);
+$collectionHistory = $stmt->fetchAll();
+
 header('Content-Type: application/json');
-echo json_encode([$or_number, $total_tuition]);
+echo json_encode([$or_number, $total_tuition, $collectionHistory]);

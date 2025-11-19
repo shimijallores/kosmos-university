@@ -17,7 +17,7 @@ $semesters = $stmt->fetchAll();
 $today = date('Y-m-d');
 ?>
 
-<body x-data="Object.assign({ sidebarOpen: false }, search())" class="bg-gray-50">
+<body x-data="search()" class="bg-gray-50">
     <!-- Admin Sidebar -->
     <?php require('../partials/admin_sidebar.php') ?>
 
@@ -150,11 +150,65 @@ $today = date('Y-m-d');
                             <button type="button" x-show="deleteOpen" @click="deleteModal = true; deleteId = fetchedStudent[0]"
                                 class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:ring-2 focus:ring-red-600">
                                 Delete Collection</button>
-                            <button type="submit" @click='alert("Collection successfully submitted!")'
-                                class="px-4 py-2 text-sm font-medium text-white bg-neutral-800 hover:bg-neutral-900 focus:ring-2 focus:ring-neutral-800">
-                                Submit Collection</button>
+                            <button type="submit"
+                                class="px-4 py-2 text-sm font-medium text-white bg-neutral-800 hover:bg-neutral-900 focus:ring-2 focus:ring-neutral-800"
+                                x-text="fetchedStudent[0] && deleteOpen ? 'Update Collection' : 'Submit Collection'">
+                            </button>
                         </div>
                     </form>
+                </div>
+
+                <!-- Collection History Table -->
+                <div x-show="studentNumber" class="mt-6 bg-white border border-gray-200 p-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Collection History</h2>
+                    <div class="overflow-x-auto">
+                        <template x-if="collectionHistory.length > 0">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="bg-gray-50 border-b border-gray-200">
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-900">OR Number</th>
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-900">Date</th>
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-900">Semester</th>
+                                        <th class="px-4 py-3 text-right text-sm font-medium text-gray-900">Cash</th>
+                                        <th class="px-4 py-3 text-right text-sm font-medium text-gray-900">GCash</th>
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-900">GCash Ref</th>
+                                        <th class="px-4 py-3 text-right text-sm font-medium text-gray-900">Total</th>
+                                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-900">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <template x-for="collection in collectionHistory" :key="collection.or_number">
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-4 py-3 text-sm text-gray-900" x-text="collection.or_number"></td>
+                                            <td class="px-4 py-3 text-sm text-gray-600" x-text="new Date(collection.or_date).toLocaleDateString()"></td>
+                                            <td class="px-4 py-3 text-sm text-gray-900" x-text="collection.semester"></td>
+                                            <td class="px-4 py-3 text-sm text-gray-900 text-right" x-text="'₱' + parseFloat(collection.cash).toFixed(2)"></td>
+                                            <td class="px-4 py-3 text-sm text-gray-900 text-right" x-text="'₱' + parseFloat(collection.gcash).toFixed(2)"></td>
+                                            <td class="px-4 py-3 text-sm text-gray-600" x-text="collection.gcash_refno || '-'"></td>
+                                            <td class="px-4 py-3 text-sm font-medium text-gray-900 text-right" x-text="'₱' + parseFloat(collection.total).toFixed(2)"></td>
+                                            <td class="px-4 py-3 text-sm text-center">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <button type="button" @click="editCollection(collection)"
+                                                        class="px-3 py-1 text-xs font-medium text-white bg-neutral-800 hover:bg-neutral-900 focus:ring-2 focus:ring-neutral-800">
+                                                        Edit
+                                                    </button>
+                                                    <button type="button" @click="deleteModal = true; deleteId = collection.or_number"
+                                                        class="px-3 py-1 text-xs font-medium text-white bg-red-600 hover:bg-red-700 focus:ring-2 focus:ring-red-600">
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <template x-if="collectionHistory.length === 0">
+                            <div class="text-center py-8 text-gray-500">
+                                <p class="text-sm">No collection history found for this student.</p>
+                            </div>
+                        </template>
+                    </div>
                 </div>
             </div>
         </div>
@@ -165,6 +219,7 @@ $today = date('Y-m-d');
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('search', () => ({
+            sidebarOpen: false,
             searchOpen: false,
             deleteOpen: false,
             deleteModal: false,
@@ -175,6 +230,7 @@ $today = date('Y-m-d');
             currentSem: '<?= addslashes($_SESSION['last_collection']['semester'] ?? '1st25-26') ?>',
             fetchedStudent: ['<?= $_SESSION['last_collection']['new_or'] ?? '' ?>', '<?= $_SESSION['last_collection']['balance'] ?? 0 ?>'],
             collectionData: [],
+            collectionHistory: [],
             cash: '',
             gcash: '',
             gcashRef: '',
@@ -182,6 +238,7 @@ $today = date('Y-m-d');
             init() {
                 if (this.studentNumber) {
                     this.fetchStudent(this.studentNumber);
+                    this.fetchORNumber(this.studentNumber, this.currentSem);
                 }
             },
 
@@ -195,8 +252,10 @@ $today = date('Y-m-d');
                 let response = await fetch(
                     `or_api.php?studentNumber=${studentNumber}&semester=${semester}`);
 
-                this.fetchedStudent = await response.json();
+                const data = await response.json();
 
+                this.fetchedStudent = [data[0], data[1]];
+                this.collectionHistory = data[2] || [];
                 this.cash = this.fetchedStudent[1];
             },
 
@@ -229,10 +288,27 @@ $today = date('Y-m-d');
                 this.studentNumber = '';
                 this.studentName = '';
                 this.fetchedStudent = [];
+                this.collectionHistory = [];
                 this.message = [];
                 this.fetchStudent('');
 
                 this.deleteOpen = false;
+            },
+
+            editCollection(collection) {
+                // Populate form with collection data
+                this.fetchedStudent = [collection.or_number, this.fetchedStudent[1]];
+                this.cash = collection.cash;
+                this.gcash = collection.gcash;
+                this.gcashRef = collection.gcash_refno;
+                this.currentSem = collection.semester;
+                this.deleteOpen = true;
+
+                // Scroll to form
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
         }))
     })
