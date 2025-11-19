@@ -9,7 +9,7 @@ session_start();
 $student = $_SESSION['student'];
 
 if (empty($_SESSION['user'])) {
-    header('location: /login.php');
+    header('location: /menu.php');
     exit();
 }
 

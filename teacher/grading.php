@@ -4,8 +4,8 @@ require('../partials/head.php');
 
 # Auth Barrier
 if (empty($_SESSION['user'])) {
-  header('location: /login.php');
-  exit();
+    header('location: /menu.php');
+    exit();
 }
 
 # Get current user info
@@ -23,8 +23,8 @@ $stmt->execute([$user['name']]);
 $student = $stmt->fetch();
 
 if (!$student) {
-  header('location: /login.php');
-  exit();
+    header('location: /menu.php');
+    exit();
 }
 
 # Fetch semesters
@@ -54,10 +54,10 @@ $student_subjects = $stmt->fetchAll();
 $total_points = 0;
 $total_units = 0;
 foreach ($student_subjects as $subject) {
-  if ($subject['final_course_grade'] > 0) {
-    $total_points += $subject['final_course_grade'] * $subject['units'];
-    $total_units += $subject['units'];
-  }
+    if ($subject['final_course_grade'] > 0) {
+        $total_points += $subject['final_course_grade'] * $subject['units'];
+        $total_units += $subject['units'];
+    }
 }
 $gpa = $total_units > 0 ? number_format($total_points / $total_units, 2) : '0.00';
 
@@ -85,10 +85,10 @@ $gpa = $total_units > 0 ? number_format($total_points / $total_units, 2) : '0.00
                 <select name="semester" id="semester_select" onchange="changeSemester(this.value)"
                     class="py-1 px-2 border border-black w-full sm:w-auto">
                     <?php foreach ($semesters as $semester) : ?>
-                    <option value="<?= $semester['code'] ?>"
-                        <?= $semester['code'] === $current_semester ? 'selected' : '' ?>>
-                        <?= $semester['code'] ?>
-                    </option>
+                        <option value="<?= $semester['code'] ?>"
+                            <?= $semester['code'] === $current_semester ? 'selected' : '' ?>>
+                            <?= $semester['code'] ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -109,37 +109,37 @@ $gpa = $total_units > 0 ? number_format($total_points / $total_units, 2) : '0.00
                 </thead>
                 <tbody>
                     <?php if (empty($student_subjects)) : ?>
-                    <tr>
-                        <td colspan="6" class="px-2 py-8 text-center text-gray-500">
-                            No subjects enrolled for this semester.
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="6" class="px-2 py-8 text-center text-gray-500">
+                                No subjects enrolled for this semester.
+                            </td>
+                        </tr>
                     <?php else : ?>
-                    <?php foreach ($student_subjects as $key => $subject) : ?>
-                    <tr class="hover:bg-gray-100">
-                        <td class="px-2 py-2"><?= ($key + 1) . ". " . $subject['code'] ?? '' ?></td>
-                        <td class="px-2 py-2"><?= substr($subject['description'] ?? '', 0, 100) . '...' ?></td>
-                        <td class="px-2 py-2 text-center"><?= $subject['units'] ?? '' ?></td>
-                        <td class="px-2 py-2 text-center">
-                            <?= $subject['midterm_grade'] != '0.00' ? number_format((float)$subject['midterm_grade'], 2) : '-' ?>
-                        </td>
-                        <td class="px-2 py-2 text-center">
-                            <?= $subject['final_course_grade'] != '0.00' ? number_format((float)$subject['final_course_grade'], 2) : '-' ?>
-                        </td>
-                        <td class="px-2 py-2 text-center">
-                            <?php
-                  $final_grade = (float)$subject['final_course_grade'];
-                  if ($final_grade >= 1.0 && $final_grade <= 3.0) {
-                    echo '<span class="text-green-600 font-bold">Passed</span>';
-                  } elseif ($final_grade > 3.0) {
-                    echo '<span class="text-red-600 font-bold">Failed</span>';
-                  } else {
-                    echo '<span class="text-gray-500">Pending</span>';
-                  }
-                  ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
+                        <?php foreach ($student_subjects as $key => $subject) : ?>
+                            <tr class="hover:bg-gray-100">
+                                <td class="px-2 py-2"><?= ($key + 1) . ". " . $subject['code'] ?? '' ?></td>
+                                <td class="px-2 py-2"><?= substr($subject['description'] ?? '', 0, 100) . '...' ?></td>
+                                <td class="px-2 py-2 text-center"><?= $subject['units'] ?? '' ?></td>
+                                <td class="px-2 py-2 text-center">
+                                    <?= $subject['midterm_grade'] != '0.00' ? number_format((float)$subject['midterm_grade'], 2) : '-' ?>
+                                </td>
+                                <td class="px-2 py-2 text-center">
+                                    <?= $subject['final_course_grade'] != '0.00' ? number_format((float)$subject['final_course_grade'], 2) : '-' ?>
+                                </td>
+                                <td class="px-2 py-2 text-center">
+                                    <?php
+                                    $final_grade = (float)$subject['final_course_grade'];
+                                    if ($final_grade >= 1.0 && $final_grade <= 3.0) {
+                                        echo '<span class="text-green-600 font-bold">Passed</span>';
+                                    } elseif ($final_grade > 3.0) {
+                                        echo '<span class="text-red-600 font-bold">Failed</span>';
+                                    } else {
+                                        echo '<span class="text-gray-500">Pending</span>';
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -155,9 +155,9 @@ $gpa = $total_units > 0 ? number_format($total_points / $total_units, 2) : '0.00
 </body>
 
 <script>
-function changeSemester(semester) {
-    window.location.href = `grades.php?semester=${semester}`;
-}
+    function changeSemester(semester) {
+        window.location.href = `grades.php?semester=${semester}`;
+    }
 </script>
 
 <?php

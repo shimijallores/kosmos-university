@@ -15,7 +15,7 @@ if (!$success && !$error) {
 }
 
 if (empty($_SESSION['user'])) {
-    header('location: /login.php');
+    header('location: /menu.php');
     exit();
 }
 ?>
@@ -32,51 +32,51 @@ if (empty($_SESSION['user'])) {
         <!-- Success/Error Message -->
         <div class="bg-white rounded-lg p-6">
             <?php if ($success): ?>
-            <!-- Success -->
-            <div class="text-center">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">Enrollment Successful!</h2>
-                <p class="text-gray-600 mb-6">Welcome to DINO UNIVERSITY</p>
+                <!-- Success -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Enrollment Successful!</h2>
+                    <p class="text-gray-600 mb-6">Welcome to DINO UNIVERSITY</p>
 
-                <div class="bg-gray-50 rounded-lg p-4 mb-6 text-left">
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <span class="font-medium text-gray-700">Student Number:</span>
-                            <span
-                                class="text-gray-900 font-mono"><?= htmlspecialchars($success['student_number']) ?></span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="font-medium text-gray-700">Name:</span>
-                            <span class="text-gray-900"><?= htmlspecialchars($success['student_name']) ?></span>
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6 text-left">
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="font-medium text-gray-700">Student Number:</span>
+                                <span
+                                    class="text-gray-900 font-mono"><?= htmlspecialchars($success['student_number']) ?></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="font-medium text-gray-700">Name:</span>
+                                <span class="text-gray-900"><?= htmlspecialchars($success['student_name']) ?></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             <?php else: ?>
-            <!-- Error -->
-            <div class="text-center">
-                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
-                    </svg>
+                <!-- Error -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                            </path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Enrollment Failed</h2>
+                    <p class="text-gray-600 mb-6"><?= htmlspecialchars($error) ?></p>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">Enrollment Failed</h2>
-                <p class="text-gray-600 mb-6"><?= htmlspecialchars($error) ?></p>
-            </div>
             <?php endif; ?>
 
             <!-- Actions -->
             <div class="mt-8 space-y-3">
                 <?php if ($success): ?>
-                <a href="index.php"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md transition duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 inline-block text-center">
-                    Back to Main Menu
-                </a>
+                    <a href="index.php"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md transition duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 inline-block text-center">
+                        Back to Main Menu
+                    </a>
                 <?php endif; ?>
             </div>
         </div>

@@ -1,51 +1,61 @@
 # AI Coding Agent Instructions for University Enrollment & Portal
 
-## Project Overview
+```md
+# Copilot instructions — University enrollment & portal (concise)
 
-This is a PHP-based university management system with MySQL database. It handles student enrollment, course management, grading, collections (payments), and provides separate portals for admins and students. The system uses plain PHP with PDO for database interactions, Tailwind CSS for styling, and Alpine.js for client-side interactivity.
+Purpose: quickly onboard AI coding agents so they can make focused, safe edits.
 
-## Architecture & Data Flow
+High level
 
-- **Core Tables**: `users` (auth), `students`, `courses`, `subjects`, `semesters`, `student_subjects` (enrollments/grades), `collections` (payments), `audit_trait` (activity log)
-- **Authentication**: Session-based with roles (admin/student). Students login with auto-generated student_number as credentials
-- **Modules**: Each feature (students, courses, subjects, etc.) follows CRUD pattern in separate directories
-- **Data Relationships**: Students enroll in subjects per semester, earn grades, make payments via collections
-- **External Integrations**: FPDF library for PDF report generation (grades, subjects)
+- PHP app (plain PHP + PDO) with MySQL; front-end uses Tailwind CSS + Alpine.js.
+- Modules are filesystem-separated by feature: `students/`, `courses/`, `subjects/`, `collections/`, `grades/`, `enrollment/`, `semesters/`, `partials/`, `student/`, `teacher/`.
 
-## Key Conventions & Patterns
+Key patterns (do these exactly)
 
-- **File Structure**: Each module has `index.php` (list), `create.php` (form), `store.php` (insert), `edit.php` (form), `update.php` (update), `delete.php` (modal), `destroy.php` (delete)
-- **Database Access**: Use PDO from `partials/database.php`. Always prepare statements to prevent SQL injection
-- **Authentication Checks**: Start each protected page with `if (empty($_SESSION['user'])) { header('location: login.php'); exit(); }`
-- **Error Handling**: On DB errors, redirect to `404.php` or `failed.php`. Use try-catch in store/update operations
-- **Audit Logging**: For collections module, log all actions (A/E/D) to `audit_trait` table with user_id, module, refno
-- **Session Messages**: Store feedback in `$_SESSION['message']` or similar for user notifications
-- **Form Processing**: POST to `store.php`/`update.php`/`destroy.php`, redirect back to `index.php` on success
-- **Styling**: Use Tailwind CSS classes. Forms use floating label style with `relative z-0 w-full mb-5 group`
-- **JavaScript**: Alpine.js for modals (e.g., `x-data="{deleteModal: false, deleteId: null}"`)
-- **PDF Generation**: Extend FPDF class for custom headers/footers. Query data, calculate metrics (GPA), output to browser
+- CRUD per module: `index.php` (list), `create.php` (form), `store.php` (insert), `edit.php`, `update.php`, `delete.php` (modal), `destroy.php` (delete). Follow this pattern for new features.
+- DB access: use `partials/database.php` PDO connection and prepared statements. Never inline raw user input into SQL.
+- Auth: session-based. Guard pages with `if (empty($_SESSION['user'])) { header('location: menu.php'); exit(); }`.
+- Flash messages: codebase uses `$_SESSION['message']` (or similar) for feedback; preserve these conventions when redirecting.
+- Audit log: `audit_trait` is used by `collections/` (A/E/D) — include user_id, module, refno when logging.
 
-## Developer Workflows
+Concrete examples (search before changing)
 
-- **Setup**: Import `database/database.sql` into MySQL. Configure `partials/database.php` with correct credentials. Run via Apache/Nginx or PHP built-in server
-- **Adding Features**: Create new module directory with standard CRUD files. Add menu link in `index.php` or `student/index.php`
-- **Database Changes**: Update `database.sql` with new tables/migrations. Use foreign keys for relationships
-- **Testing**: Manual testing only. Verify CRUD operations, PDF outputs, and role-based access
-- **Debugging**: Use `dd()` function from `functions.php` for var dumps. Check PHP error logs
+- Enrollment creates both `students` and an auto user — see `enrollment/store.php`.
+- Collections: see `collections/store.php`, `collections/or_api.php`, `collections/api.php` for payment-related flows and OR number uniqueness.
+- PDFs: `fpdf186/` contains FPDF; `grades/print.php` and `subjects/print.php` show how reports are built (extend FPDF, custom header/footer).
 
-## Common Patterns
+Developer flows
 
-- **Student Number Generation**: In enrollment, format as `S{year}{3-digit sequential}` (e.g., S2025001)
-- **Grade Calculation**: GPA = sum(final_grade \* units) / total_units, only for subjects with final_course_grade > 0
-- **Collections**: Support cash and GCash payments. OR numbers are unique, can be updated
-- **Semester Filtering**: Pass `?semester={code}` in URLs for semester-specific views
-- **Role-Based UI**: Admins see full menus, students see limited portal (grades, ledger, password change)
+- Local run: import `database/database.sql` into MySQL, update `partials/database.php` with credentials.
+- Quick dev server: from project root run `php -S localhost:8000 -t .` and open `http://localhost:8000/` (or use Apache/Nginx).
+- No automated tests found — changes must be validated manually in-browser and by inspecting DB.
 
-## Key Files to Reference
+Conventions worth preserving
 
-- `partials/database.php`: DB connection setup
-- `functions.php`: Debug utilities
-- `students/index.php`: Example list view with table and delete modal
-- `collections/store.php`: Example with audit logging
-- `grades/print.php`: PDF generation pattern
-- `enrollment/store.php`: Auto user creation for students
+- Tailwind classes for layout; floating-label form pattern uses `relative z-0 w-full mb-5 group`.
+- Alpine.js patterns for modals: `x-data="{deleteModal:false, deleteId:null}"` and toggling values via `x-on:click`.
+- Student number format: `S{year}{3-digit sequential}` (e.g., `S2025001`) — modify only where enrollment logic lives.
+- GPA calculation: use only subjects with `final_course_grade > 0`; formula: sum(final_grade \* units) / total_units.
+
+Integration & APIs
+
+- Minimal internal APIs live in module folders (`subjects/api.php`, `grades/api.php`, `collections/or_api.php`) — they expect POST and return HTML/JSON.
+
+What AI agents should do first
+
+- Read `partials/database.php`, `functions.php`, `enrollment/store.php`, `collections/store.php`, and one PDF print file (`grades/print.php`).
+- Search for `store.php` and `destroy.php` when changing flows to update redirects/messages consistently.
+
+Safety & scope
+
+- Avoid changing global templates (`partials/head.php`, `menu.php`, `partials/footer.php`) unless UX-wide change requested.
+- Don't invent new authentication mechanisms; extend existing session-based role checks.
+
+When unsure, ask the human: share the specific file and the DB table you plan to modify.
+
+Files to reference quickly
+
+- `partials/database.php`, `functions.php`, `menu.php`, `enrollment/store.php`, `collections/store.php`, `grades/print.php`, `database/database.sql`.
+
+End of instructions.
+```

@@ -15,7 +15,7 @@ $semesters = $stmt->fetchAll();
 
 
 if (empty($_SESSION['user'])) {
-    header('location: /login.php');
+    header('location: /menu.php');
     exit();
 }
 ?>
@@ -68,9 +68,9 @@ if (empty($_SESSION['user'])) {
                         required>
                         <option value="">Select Course</option>
                         <?php foreach ($courses as $course): ?>
-                        <option value="<?= $course['course_id'] ?>">
-                            <?= htmlspecialchars($course['code'] . ' - ' . $course['name']) ?>
-                        </option>
+                            <option value="<?= $course['course_id'] ?>">
+                                <?= htmlspecialchars($course['code'] . ' - ' . $course['name']) ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -85,9 +85,9 @@ if (empty($_SESSION['user'])) {
                         required>
                         <option value="">Select Semester</option>
                         <?php foreach ($semesters as $semester): ?>
-                        <option value="<?= $semester['id'] ?>">
-                            <?= htmlspecialchars($semester['code']) ?>
-                        </option>
+                            <option value="<?= $semester['id'] ?>">
+                                <?= htmlspecialchars($semester['code']) ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -102,7 +102,7 @@ if (empty($_SESSION['user'])) {
             <!-- Back to Login -->
             <div class="mt-6 text-center">
                 <p class="text-gray-600 text-sm">
-                    <a href="../login.php" class=" bg-blue-500 p-2 text-white hover:text-neutral-700 font-medium">
+                    <a href="/menu.php" class=" bg-blue-500 p-2 text-white hover:text-neutral-700 font-medium">
                         Back to menu
                     </a>
                 </p>

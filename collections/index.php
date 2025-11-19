@@ -4,7 +4,7 @@ require('../partials/head.php');
 
 // Auth Barrier
 if (empty($_SESSION['user'])) {
-    header('location: /login.php');
+    header('location: /menu.php');
     exit();
 }
 

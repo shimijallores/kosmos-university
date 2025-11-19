@@ -4,7 +4,7 @@ require('../partials/head.php');
 
 # Auth Barrier
 if (empty($_SESSION['user'])) {
-    header('location: /login.php');
+    header('location: /menu.php');
     exit();
 }
 
@@ -24,7 +24,7 @@ $stmt->execute([$user['name']]);
 $student = $stmt->fetch();
 
 if (!$student) {
-    header('location: /login.php');
+    header('location: /menu.php');
     exit();
 }
 

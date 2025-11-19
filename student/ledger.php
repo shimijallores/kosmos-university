@@ -7,7 +7,7 @@ require('../partials/database.php');
 session_start();
 
 if (empty($_SESSION['user'])) {
-  header('location: /login.php');
+  header('location: /menu.php');
   exit();
 }
 
