@@ -75,175 +75,186 @@ if (isset($_SESSION['student_number'])) {
 }
 
 # Fetch semesters
-$stmt = $connection->prepare("
-select * from semesters
-");
-
+$stmt = $connection->prepare("select * from semesters ORDER BY start_date DESC");
 $stmt->execute();
-
 $semesters = $stmt->fetchAll();
 ?>
 
-<body x-data="search(true)" class="flex justify-content flex-col items-center">
+<body class="bg-gray-50" x-data="search(true)">
+    <?php require('../partials/admin_sidebar.php'); ?>
+
+    <!-- Main Content -->
+    <div class="flex-1 lg:ml-64">
+        <!-- Header -->
+        <div class="bg-white border-b border-gray-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden text-gray-600 hover:text-gray-900">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                    <h1 class="text-2xl font-extrabold text-gray-900">Subject Management</h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="p-6">
+            <!-- Search Section -->
+            <!-- Search Section -->
+            <div class="bg-white border border-gray-200 p-6 mb-6">
+                <form method="POST" action="index.php?semester=<?= $_GET['semester'] ?? '1st25-26' ?>"
+                    class="space-y-4">
+                    <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Student Number</label>
+                            <template x-if="studentNumber">
+                                <input type="text" name="student_number"
+                                    class="w-full px-3 py-2 border border-gray-300 focus:ring-neutral-800 focus:border-neutral-800"
+                                    :value="studentNumber">
+                            </template>
+                            <template x-if="!studentNumber">
+                                <input autofocus type="text" name="student_number"
+                                    class="w-full px-3 py-2 border border-gray-300 focus:ring-neutral-800 focus:border-neutral-800"
+                                    value="<?= $_SESSION['student_number'] ?? '' ?>">
+                            </template>
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="submit" x-ref="search_button"
+                                class="px-4 py-2 bg-neutral-800 hover:bg-neutral-900 text-white font-medium border border-neutral-800 focus:ring-2 focus:ring-neutral-800 focus:ring-offset-2">
+                                Search
+                            </button>
+                            <button type="button" @click="open = true; $nextTick(() => $refs.student_name.focus())"
+                                class="px-4 py-2 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium focus:ring-2 focus:ring-neutral-800 focus:ring-offset-2">
+                                🔍
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <?php if (!empty($_SESSION['student_number']) && $student) : ?>
+                <!-- Student Info Card -->
+                <div class="bg-white border border-gray-200 p-6 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                            <input type="text" readonly
+                                class="w-full px-3 py-2 border border-gray-300 bg-gray-50 text-gray-700"
+                                value="<?= htmlspecialchars($student['student_name'] ?? '') ?>">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Course</label>
+                            <input type="text" readonly
+                                class="w-full px-3 py-2 border border-gray-300 bg-gray-50 text-gray-700"
+                                value="<?= htmlspecialchars($student['course_name'] ?? '') ?>">
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="block text-sm font-medium text-gray-700">Semester</label>
+                        <select @change="window.location.href = `index.php?semester=${$event.target.value}`"
+                            class="px-3 py-2 border border-gray-300 bg-white focus:ring-neutral-800 focus:border-neutral-800">
+                            <?php foreach ($semesters as $semester) : ?>
+                                <option value="<?= $semester['code'] ?>"
+                                    <?= $semester['code'] === ($_GET['semester'] ?? '1st25-26') ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($semester['code']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Student Subjects Table -->
+                <div class="bg-white border border-gray-200 mb-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                            <thead class="text-xs uppercase bg-gray-50 text-gray-700 border-b border-gray-200">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 font-medium">#</th>
+                                    <th scope="col" class="px-6 py-3 font-medium">Code</th>
+                                    <th scope="col" class="px-6 py-3 font-medium">Description</th>
+                                    <th scope="col" class="px-6 py-3 font-medium">Days</th>
+                                    <th scope="col" class="px-6 py-3 font-medium">Time</th>
+                                    <th scope="col" class="px-6 py-3 font-medium">Room</th>
+                                    <th scope="col" class="px-6 py-3 font-medium">Teacher</th>
+                                    <th scope="col" class="px-6 py-3 font-medium">Price/Unit</th>
+                                    <th scope="col" class="px-6 py-3 font-medium">Units</th>
+                                    <th scope="col" class="px-6 py-3 font-medium">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <?php foreach ($student['subjects'] as $key => $subject) : ?>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium text-gray-900"><?= $key + 1 ?></td>
+                                        <td class="px-6 py-4 text-gray-900"><?= htmlspecialchars($subject['code'] ?? '') ?></td>
+                                        <td class="px-6 py-4 text-gray-900"><?= htmlspecialchars(substr($subject['description'] ?? '', 0, 50)) . '...' ?></td>
+                                        <td class="px-6 py-4 text-gray-900"><?= htmlspecialchars($subject['days'] ?? '') ?></td>
+                                        <td class="px-6 py-4 text-gray-900"><?= htmlspecialchars($subject['time'] ?? '') ?></td>
+                                        <td class="px-6 py-4 text-gray-900"><?= htmlspecialchars($subject['room_name'] ?? '') ?></td>
+                                        <td class="px-6 py-4 text-gray-900"><?= htmlspecialchars($subject['teacher_name'] ?? '') ?></td>
+                                        <td class="px-6 py-4 text-gray-900"><?= htmlspecialchars($subject['price_unit'] ?? '') ?></td>
+                                        <td class="px-6 py-4 text-gray-900"><?= htmlspecialchars($subject['units'] ?? '') ?></td>
+                                        <td class="px-6 py-4">
+                                            <button @click='deleteModal = true; deleteId = <?= $subject["id"] ?>'
+                                                class='px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium border border-red-600 focus:ring-2 focus:ring-red-600 focus:ring-offset-2'>
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Add Subject Form -->
+                <div class="bg-white border border-gray-200 p-6 mb-6">
+                    <form method="POST" action="create.php" class="space-y-4">
+                        <input type="hidden" name="student_id" value="<?= $student['student_id'] ?>">
+                        <input type="hidden" name="semester_code" value="<?= $_GET['semester'] ?? '1st25-26' ?>">
+
+                        <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
+                            <div class="flex-1">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Select Subject</label>
+                                <select name="subject"
+                                    class="w-full px-3 py-2 border border-gray-300 bg-white focus:ring-neutral-800 focus:border-neutral-800">
+                                    <?php foreach ($subjects as $subject): ?>
+                                        <option value="<?= $subject['id'] ?>">
+                                            <?= htmlspecialchars("{$subject['code']} - {$subject['days']} - {$subject['time']} - {$subject['room_name']} - {$subject['teacher_name']} - {$subject['price_unit']} - {$subject['units']}") ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <button type="submit"
+                                class="px-4 py-2 bg-neutral-800 hover:bg-neutral-900 text-white font-medium border border-neutral-800 focus:ring-2 focus:ring-neutral-800 focus:ring-offset-2 whitespace-nowrap">
+                                Add Subject
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a target="_blank" href="print.php?semester=<?= $_GET['semester'] ?? '1st25-26' ?>"
+                        class="px-4 py-2 bg-neutral-800 hover:bg-neutral-900 text-white font-medium border border-neutral-800 focus:ring-2 focus:ring-neutral-800 focus:ring-offset-2 text-center">
+                        Print
+                    </a>
+                    <a href="/index.php"
+                        class="px-4 py-2 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium focus:ring-2 focus:ring-neutral-800 focus:ring-offset-2 text-center">
+                        Close
+                    </a>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
     <!-- Search Modal -->
     <?php require('search.php'); ?>
 
     <!-- Delete Modal -->
-    <?php require('delete.php') ?>
+    <?php require('delete.php'); ?>
 
-    <a href="/index.php"
-        class="bg-blue-500 text-center mt-6 w-40 cursor-pointer text-white font-bold py-2 px-4 rounded">Back</a>
-    <form method="POST" action="index.php?semester=<?= $_GET['semester'] ?? '1st25-26' ?>"
-        class="w-full md:max-w-3/4 mx-auto px-4 flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-        <template x-if="studentNumber">
-            <h1 class="text-2xl font-bold mt-6">Input# <input type="text" name="student_number"
-                    class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto" placeholder=""
-                    :value="studentNumber"></h1>
-        </template>
-        <template x-if="!studentNumber">
-            <h1 class="text-2xl font-bold mt-6">Input# <input autofocus type="text" name="student_number"
-                    class="border font-medium border-black rounded-sm px-2 w-full sm:w-auto" placeholder=""
-                    value="<?= $_SESSION['student_number'] ?? '' ?>"></h1>
-        </template>
-
-        <div class="flex gap-2 mt-4 sm:mt-6">
-            <button type="submit" x-ref="search_button"
-                class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">Search</button>
-            <button type="button" @click="open = true; $nextTick(() => $refs.student_name.focus())"
-                class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm">🔍</button>
-        </div>
-    </form>
-
-    <?php if (!empty($_SESSION['student_number']) && $student) : ?>
-        <div class="w-full md:max-w-3/4 mx-auto px-4 flex flex-col gap-4 mb-6">
-            <h1 class="text-2xl font-bold mt-6">Name: <input type="text"
-                    class="border font-medium border-black rounded-sm px-2 w-full md:w-auto"
-                    value="<?= $student['student_name'] ?? '' ?>" readonly>
-            </h1>
-            <h1 class="text-2xl font-bold">Course: <input type="text"
-                    class="border font-medium border-black rounded-sm px-2 w-full md:w-auto"
-                    value="<?= $student['course_name'] ?? '' ?>" readonly>
-            </h1>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:justify-end w-full">
-                <h1 class="text-lg sm:text-xl">Semester</h1>
-                <select name="sort" id="sort" @change="window.location.href = `index.php?semester=${$event.target.value}`"
-                    class="border border-black py-1 px-2 w-full sm:w-auto">
-                    <?php foreach ($semesters as $semester) : ?>
-                        <option value="<?= $semester['code'] ?>"
-                            <?= $semester['code'] === $_GET['semester'] ? 'selected' : '' ?>>
-                            <?= $semester['code'] ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-        </div>
-    <?php endif; ?>
-
-
-    <!-- Student Subject table -->
-    <?php if (!empty($_SESSION['student_number']) && $student) : ?>
-        <br class=" w-full mx-auto border border-black my-4">
-        <div class="w-full flex md:justify-center min-h-50 overflow-x-auto">
-            <table
-                class="w-full min-w-[500px] max-w-3/4 text-xs sm:text-sm border border-blue-500 text-left rtl:text-right text-gray-500">
-                <thead class="text-xs text-white uppercase bg-blue-500">
-                    <tr>
-                        <th scope="col" class="px-2 sm:px-6 py-4 sm:py-3">
-                            Subject Code
-                        </th>
-                        <th scope="col" class="px-2 sm:px-6 py-4 sm:py-3">
-                            Description
-                        </th>
-                        <th scope="col" class="px-2 sm:px-6 py-4 sm:py-3">
-                            Days
-                        </th>
-                        <th scope="col" class="px-2 sm:px-6 py-4 sm:py-3">
-                            Time
-                        </th>
-                        <th scope="col" class="px-2 sm:px-6 py-4 sm:py-3">
-                            Room
-                        </th>
-                        <th scope="col" class="px-2 sm:px-6 py-4 sm:py-3">
-                            Teacher
-                        </th>
-                        <th scope="col" class="px-2 sm:px-6 py-4 sm:py-3">
-                            Price Per Unit
-                        </th>
-                        <th scope="col" class="px-2 sm:px-6 py-4 sm:py-3">
-                            Units
-                        </th>
-                        <th scope="col" class="px-2 sm:px-6 py-4 sm:py-3">
-                            Actions
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($student['subjects'] as $key => $subject) : ?>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                            <th scope="row"
-                                class="px-2 sm:px-6 py-6 sm:py-4 font-medium text-gray-900 dark:text-white break-words">
-                                <?= ($key + 1) . ". " . $subject['code'] ?? '' ?></th>
-                            <th scope="row"
-                                class="px-2 sm:px-6 py-6 sm:py-4 font-medium text-gray-900 dark:text-white break-words">
-                                <?= substr($subject['description'] ?? '', 0, 100) . '...'  ?></th>
-                            <th scope="row"
-                                class="px-2 sm:px-6 py-6 sm:py-4 font-medium text-gray-900 dark:text-white break-words">
-                                <?= $subject['days'] ?? '' ?></th>
-                            <th scope="row"
-                                class="px-2 sm:px-6 py-6 sm:py-4 font-medium text-gray-900 dark:text-white break-words">
-                                <?= $subject['time'] ?? '' ?></th>
-                            <th scope="row"
-                                class="px-2 sm:px-6 py-6 sm:py-4 font-medium text-gray-900 dark:text-white break-words">
-                                <?= $subject['room_name'] ?? '' ?></th>
-                            <th scope="row"
-                                class="px-2 sm:px-6 py-6 sm:py-4 font-medium text-gray-900 dark:text-white break-words">
-                                <?= $subject['teacher_name'] ?? '' ?></th>
-                            <th scope="row"
-                                class="px-2 sm:px-6 py-6 sm:py-4 font-medium text-gray-900 dark:text-white break-words">
-                                <?= $subject['price_unit'] ?? '' ?></th>
-                            <th scope="row"
-                                class="px-2 sm:px-6 py-6 sm:py-4 font-medium text-gray-900 dark:text-white break-words">
-                                <?= $subject['units'] ?? '' ?></th>
-                            <th scope="row" class="px-2 sm:px-6 py-6 sm:py-4">
-                                <button @click='deleteModal = true; deleteId = <?= $subject["id"] ?>; console.log(deleteId)'
-                                    class='bg-red-500 hover:bg-red-700 text-xs cursor-pointer text-white font-bold py-2 px-3 sm:py-2 sm:px-4 rounded'>
-                                    Delete
-                                </button>
-                            </th>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-
-        <br class="w-full max-w-3/4 mx-auto border border-black my-4">
-
-        <form method="POST" action="create.php"
-            class="w-full md:max-w-3/4 mx-auto px-4 flex flex-col sm:flex-row gap-4 mt-6 items-start sm:items-center">
-            <h1 class="text-2xl font-bold">Subject:</h1>
-            <input type="hidden" name="student_id" value="<?= $student['student_id'] ?>">
-            <input type="hidden" name="semester_code" value="<?= $_GET['semester'] ?>">
-            <select name="subject" id="subject" name="subject"
-                class="font-medium text-sm sm:text-xl border border-black px-2 flex-1 md:max-w-3/4">
-                <?php foreach ($subjects as $subject): ?>
-                    <option value="<?= $subject['id'] ?>">
-                        <?= "{$subject['code']} - {$subject['days']} - {$subject['time']} - {$subject['room_name']} - {$subject['teacher_name']} - {$subject['price_unit']} - {$subject['units']}" ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-
-            <button type="submit"
-                class="bg-neutral-900 w-full md:w-20 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm whitespace-nowrap">Add</button>
-        </form>
-
-        <div class="w-full md:max-w-3/4 mx-auto px-4 flex flex-col sm:flex-row gap-4 md:items-center mt-6">
-            <a target="_blank" class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm"
-                href="print.php?semester=<?= $_GET['semester'] ?>">Print</a>
-            <a class="bg-neutral-900 cursor-pointer text-white font-bold py-2 px-4 rounded text-sm"
-                href="/index.php">Close</a>
-        </div>
-
-    <?php endif; ?>
 </body>
 
 <script>
@@ -251,6 +262,7 @@ $semesters = $stmt->fetchAll();
         Alpine.data('search', () => ({
             open: false,
             message: [],
+            sidebarOpen: true,
             studentNumber: null,
             deleteModal: false,
             deleteId: null,
