@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `audit_trait` (
   CONSTRAINT `FK_audit_trait_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table myuni.audit_trait: ~29 rows (approximately)
+-- Dumping data for table myuni.audit_trait: ~32 rows (approximately)
 INSERT INTO `audit_trait` (`id`, `user_id`, `module`, `refno`, `datetime`, `action`) VALUES
 	(1, 1, 'Collections', '0000000004', '2025-11-14 01:55:40', 'A'),
 	(2, 1, 'Collections', '0000000005', '2025-11-14 01:57:45', 'A'),
@@ -155,11 +155,13 @@ CREATE TABLE IF NOT EXISTS `students` (
   CONSTRAINT `FK_students_courses` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table myuni.students: ~3 rows (approximately)
+-- Dumping data for table myuni.students: ~5 rows (approximately)
 INSERT INTO `students` (`student_id`, `student_number`, `name`, `gender`, `course_id`) VALUES
-	(1, 'S2023001', 'Michael Brown', 'Male', 1),
-	(3, 'S2023003', 'Daniel Wilson', 'Male', 1),
-	(6, 'S2025001', 'Emma Davis', 'M', 3);
+	(1, 'S2023001', 'Michael Brown', 'M', 1),
+	(3, 'S2023003', 'Daniel Wilson', 'F', 1),
+	(6, 'S2025001', 'Emma Davis', 'M', 3),
+	(7, 'S2025002', 'Shimi Uzziel Jallores', 'M', 1),
+	(8, 'S2025003', 'Estephanie Anne M. De Torres', 'F', 1);
 
 -- Dumping structure for table myuni.student_subjects
 CREATE TABLE IF NOT EXISTS `student_subjects` (
@@ -188,7 +190,7 @@ INSERT INTO `student_subjects` (`id`, `subject_id`, `student_id`, `semester_id`,
 	(21, 2, 1, 2, NULL, NULL),
 	(22, 3, 1, 2, NULL, 1.750000),
 	(23, 1, 6, 1, 2.250000, 2.250000),
-	(24, 2, 6, 1, 2.000000, 2.000000),
+	(24, 2, 6, 1, 2.000000, 1.000000),
 	(25, 1, 6, 2, NULL, NULL),
 	(26, 2, 6, 2, NULL, NULL);
 
@@ -239,15 +241,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table myuni.users: ~7 rows (approximately)
+-- Dumping data for table myuni.users: ~9 rows (approximately)
 INSERT INTO `users` (`id`, `name`, `password`, `role`) VALUES
-	(1, 'shimi', 'shimi', 'admin'),
+	(1, 'admin', '123', 'admin'),
 	(2, 'S2025001', '123', 'student'),
 	(3, 'S2023001', '123', 'student'),
 	(4, 'S2023003', '123', 'student'),
 	(5, 'AAAAAAAAAA', '123', 'teacher'),
 	(6, 'BBBBBBBBBB', '123', 'teacher'),
-	(7, 'CCCCCCCCCC', '123', 'teacher');
+	(7, 'CCCCCCCCCC', '123', 'teacher'),
+	(8, 'S2025002', 'S2025002', 'student'),
+	(9, 'S2025003', 'S2025003', 'student');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

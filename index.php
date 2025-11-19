@@ -144,7 +144,7 @@ if (empty($_SESSION['user'])) {
                     </a>
 
                     <!-- Report Card -->
-                    <a href="report.php" class="bg-white border border-gray-300 p-6 hover:border-neutral-800 transition-colors">
+                    <a href="report.php" target="_blank" class="bg-white border border-gray-300 p-6 hover:border-neutral-800 transition-colors">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 bg-teal-50 rounded-md p-3">
                                 <svg class="h-6 w-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
